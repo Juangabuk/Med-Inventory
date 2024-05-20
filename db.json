@@ -1,0 +1,76 @@
+{
+  "user": [
+    {
+      "id": "c499",
+      "name": "admin",
+      "email": "admin@mail.com",
+      "password": "12345"
+    },
+    {
+      "id": "f275",
+      "email": "tony@tes.com",
+      "password": "totot123",
+      "name": "toni"
+    },
+    {
+      "id": "1388",
+      "email": "beni@s.com",
+      "password": "bebebe",
+      "name": "beni"
+    },
+    {
+      "id": "dcff",
+      "email": "jjlara@hh.com",
+      "password": "123",
+      "name": "jj"
+    },
+    {
+      "id": "1f13",
+      "email": "jjlara@hh.com",
+      "password": "123",
+      "name": "jj"
+    },
+    {
+      "id": "12d0",
+      "email": "jlara@hh.com",
+      "password": "123",
+      "name": "jj"
+    },
+    {
+      "id": "c519",
+      "email": "2",
+      "password": "2",
+      "name": "2"
+    },
+    {
+      "id": "7a9f",
+      "email": "2",
+      "password": "2",
+      "name": "2"
+    },
+    {
+      "id": "e2c1",
+      "email": "2",
+      "password": "2",
+      "name": "2"
+    },
+    {
+      "id": "bb71",
+      "email": "",
+      "password": "",
+      "name": ""
+    },
+    {
+      "id": "8930",
+      "email": "",
+      "password": "",
+      "name": ""
+    },
+    {
+      "id": "e22c",
+      "email": "",
+      "password": "",
+      "name": ""
+    }
+  ]
+}
