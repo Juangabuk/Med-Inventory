@@ -1,16 +1,19 @@
 <template>
     <div class="nav">
         <div class="nav-left">
-            <a href="#">Dashboard</a>
+            <div class="logo-container">
+                <span class="AMS">Med-Inventory</span>
+                <span class="asm">Inventory Management System</span>
+            </div>
             <a href="/">Home</a>
-            <a href="#">Manajemen Produk</a>
-            <a href="#">Daftar Inventory</a>
+            <a href="/product-management">Manajemen Produk</a>
+            <a href="#">Daftar Riwayat</a>
         </div>
         <div class="nav-right">
             <div class="dropdown">
                 <button class="dropbtn">Account</button>
                 <div class="dropdown-content">
-                    <a href="#">Profile</a>
+                    <a href="/profile">Profile</a>
                     <a href="/login" @click="logout">Logout</a>
                 </div>
             </div>
@@ -44,7 +47,7 @@ export default {
     flex-wrap: wrap;
 }
 
-.nav a :hover{
+.nav a:hover {
     background: #ddd;
     color: #333;
 }
@@ -131,5 +134,26 @@ export default {
     .profile-pic {
         margin-left: 0;
     }
+}
+
+.logo-container {
+    display: flex;
+    flex-direction: column; /* Menyusun elemen secara vertikal */
+    margin-right: 15px;
+}
+
+.AMS {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 4px;
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #3f3844;
+}
+
+.asm {
+    font-size: 16px;
+    margin-left: 0;
 }
 </style>
