@@ -20,11 +20,12 @@ export default {
 html,
 body,
 #app {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  box-sizing: border-box;
+  font-family: Montserrat;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: center; */
+  margin-top: 60px;
+  color: #212f3d;
 }
 
 * {

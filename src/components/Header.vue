@@ -2,11 +2,12 @@
     <div class="nav">
         <div class="nav-left">
             <div class="logo-container">
-                <span class="AMS">Med-Inventory</span>
+                <!-- <span class="AMS">Med-Inventory </span> -->
+                <router-link to="/" class="AMS text-blue-500 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium">Med-Inventory</router-link>
                 <span class="asm">Inventory Management System</span>
             </div>
             <a href="/">Home</a>
-            <a href="/product-management">Manajemen Produk</a>
+            <!-- <a href="/product-management">Product Management</a> -->
             <a href="#">Daftar Riwayat</a>
         </div>
         <div class="nav-right">
@@ -35,6 +36,17 @@ export default {
 </script>
 
 <style scoped>
+.home-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    /* Align items to the start of the container */
+    padding: 20px;
+    /* Optional: Add some padding */
+    height: 100vh;
+    /* Make the container take the full height of the viewport */
+}
+
 .nav {
     display: flex;
     justify-content: space-between;
@@ -148,8 +160,9 @@ export default {
     border-radius: 4px;
     font-size: 30px;
     font-weight: bold;
-    color: #ffffff;
-    background-color: #3f3844;
+    color: #ff0000;
+    background-color: #000000;
+    
 }
 
 .asm {
