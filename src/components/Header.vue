@@ -1,13 +1,13 @@
 <template>
     <div class="nav">
-        <div class="nav-left">
-            <div class="logo-container">
-                <!-- <span class="AMS">Med-Inventory </span> -->
-                <router-link to="/" class="AMS text-blue-500 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium">Med-Inventory</router-link>
-                <span class="asm">Inventory Management System</span>
-            </div>
+        <div class="logo-container">
+            <router-link to="/"
+                class="AMS text-blue-500 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium">Med-Inventory</router-link>
+            <span class="asm">Inventory Management System</span>
+        </div>
+        <div class="nav-links">
             <a href="/">Home</a>
-            <!-- <a href="/product-management">Product Management</a> -->
+            <a href="/product-management">Product Management</a>
             <a href="#">Daftar Riwayat</a>
         </div>
         <div class="nav-right">
@@ -36,17 +36,6 @@ export default {
 </script>
 
 <style scoped>
-.home-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    /* Align items to the start of the container */
-    padding: 20px;
-    /* Optional: Add some padding */
-    height: 100vh;
-    /* Make the container take the full height of the viewport */
-}
-
 .nav {
     display: flex;
     justify-content: space-between;
@@ -54,9 +43,8 @@ export default {
     background-color: #ffffff;
     padding: 10px 20px;
     width: 100%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-    flex-wrap: wrap;
 }
 
 .nav a:hover {
@@ -64,12 +52,14 @@ export default {
     color: #333;
 }
 
-.nav-left, .nav-right {
+.nav-links {
     display: flex;
     align-items: center;
+    flex-grow: 1;
+    justify-content: center;
 }
 
-.nav-left a {
+.nav-links a {
     margin-right: 15px;
     text-decoration: none;
     color: #333;
@@ -77,7 +67,6 @@ export default {
 }
 
 .nav-right {
-    margin-left: auto;
     display: flex;
     align-items: center;
 }
@@ -102,7 +91,7 @@ export default {
     right: 0;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
@@ -133,16 +122,25 @@ export default {
 }
 
 @media (max-width: 768px) {
-    .nav-left, .nav-right {
+    .nav {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .nav-links {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
     .nav-right {
         margin-left: 0;
     }
-    .nav-left a, .dropbtn {
+
+    .nav-links a,
+    .dropbtn {
         margin-bottom: 10px;
     }
+
     .profile-pic {
         margin-left: 0;
     }
@@ -150,7 +148,7 @@ export default {
 
 .logo-container {
     display: flex;
-    flex-direction: column; /* Menyusun elemen secara vertikal */
+    flex-direction: column;
     margin-right: 15px;
 }
 
@@ -162,7 +160,6 @@ export default {
     font-weight: bold;
     color: #ff0000;
     background-color: #000000;
-    
 }
 
 .asm {

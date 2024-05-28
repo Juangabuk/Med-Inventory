@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
     <img class="logo" src="https://picsum.photos/200/300?grayscale">
     <h1>Sign Up</h1>
     <div class ="register">
@@ -10,50 +10,93 @@
             <RouterLink to="/login">Login</RouterLink>
         </p>
     </div>
+</template> -->
+
+<template>
+    <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+        <div class="bg-white p-8 rounded-lg shadow-md w-96">
+            <h1 class="text-xl font-bold mb-6">Register</h1>
+            <form @submit.prevent="register">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                    <input type="name" v-model="name" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" v-model="email" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" v-model="password" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
+                    <input type="password" v-model="confirmPassword" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex items-center justify-between">
+                    <button v-on:click="signUp"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        type="submit">Register</button>
+                    <router-link to="/login"
+                        class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">Back to
+                        login</router-link>
+
+                </div>
+            </form>
+        </div>
+    </div>
 </template>
 
 <script>
 import axios from 'axios'
-import Home from './Home.vue';
+import Home from '../views/Home.vue';
 
 export default {
     name: 'SignUp',
-    data()
-    {
+    data() {
         return {
-            name: '',
+            name : '',
             email: '',
-            password:''
-        }
+            password: '',
+            confirmPassword: ''
+        };
     },
-    methods:{
-        async signUp()
-        {
+    methods: {
+        async signUp() {
             // console.warn("signup",this.name, this.email, this.password)
-            let result = await axios.post("http://localhost:3000/user",{
-                email:this.email,
-                password:this.password,
-                name:this.name
+            let result = await axios.post("http://localhost:3000/user", {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+                name: this.confirmPasswordpassword
             });
 
             console.warn(result);
-            if(result.status==201)
-            {
+            if (result.status == 201) {
                 alert("sign-up done");
                 localStorage.setItem("user-info", JSON.stringify(result.data))
-                this.$router.push({name:'Home'})
+                this.$router.push({ name: 'Home' })
             }
-            
+
         }
     },
-    mounted()
-    {
-        let user= localStorage.getItem('user-info');
-        if(user)
-        {
-            this.$router.push({name:'Home'})
+    mounted() {
+        let user = localStorage.getItem('user-info');
+        if (user) {
+            this.$router.push({ name: 'Home' })
         }
+    },
+    register() {
+      if (this.password !== this.confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      alert(`Registration attempt with email: ${this.email}`);
+      // Perform registration logic
     }
 }
 </script>
-

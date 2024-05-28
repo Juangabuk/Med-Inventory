@@ -71,6 +71,47 @@
       "email": "",
       "password": "",
       "name": ""
+    },
+    {
+      "id": "1371",
+      "email": "jabuks@mail.com",
+      "password": "12345"
+    },
+    {
+      "id": "d33d",
+      "email": "jj@hh.com",
+      "password": "12345"
+    },
+    {
+      "id": "2047",
+      "email": "ww@w.com",
+      "password": "12345"
+    }
+  ],
+  "itemInventory" : [
+    {
+      "id":1,
+      "itemName": "USG Detector",
+      "kode": "AK01",
+      "stok": 12,
+      "kategori": "Alkes",
+      "image": "https://picsum.photos/id/237/200/300"
+    },
+    {
+      "id":2,
+      "itemName": "Rak Besi",
+      "kode": "AL01",
+      "stok": 16,
+      "kategori": "Logistik",
+      "image": "https://picsum.photos/id/237/200/300"
+    },
+    {
+      "id":3,
+      "itemName": "Kasur",
+      "kode": "AL02",
+      "stok": 10,
+      "kategori": "Logistik",
+      "image": "https://picsum.photos/id/237/200/300"
     }
   ]
 }
