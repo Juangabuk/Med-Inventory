@@ -5,27 +5,28 @@ import { backendUrl } from '../varConstants'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
-export const useLoginStore = defineStore('login', ()=>{
+export const useRegisterStore = defineStore('register', ()=>{
 
     const router = useRouter()
     const baseUrl = backendUrl
 
-    const userData = ref(null)
-
-    const handleLoginUser = async (input)=>{
-
+    const handleRegisterUser = async (input)=>{
+        
         try{
+            if (input.password != input.passwordConfirmation){
+                throw{response:{data:{message:"Password tidak sama"}}}
+            }
 
+            delete input.passwordConfirmation
             const {data} = await axios({
                 method:'post',
-                url: `${baseUrl}/user/login`,
+                url: `${baseUrl}/user/register`,
                 data:input
             })
-
-            userData.value = data.data
-            localStorage.setItem('access_token', data.access_token)
-            localStorage.setItem('role', "User")
+           
+      
             
+            router.push('/login')
             Swal.fire({
                 toast: true,
                 showConfirmButton: true,
@@ -33,10 +34,10 @@ export const useLoginStore = defineStore('login', ()=>{
                 // timerProgressBar: true,
             
                 icon: 'success',
-                title: 'Selamat Datang'
+                title: `Pendaftaran Berhasil`
             })
 
-            router.push('/')
+            
         }
         catch(err){
             Swal.fire({
@@ -52,5 +53,5 @@ export const useLoginStore = defineStore('login', ()=>{
         }
     }
 
-    return {handleLoginUser, userData}
+    return {handleRegisterUser}
 })
