@@ -31,8 +31,6 @@ const formLogin = ref({
                     <button
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit">Login</button>
-                    <router-link to="/sign-up"
-                        class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">REGISTER</router-link>
                 </div>
             </form>
         </div>

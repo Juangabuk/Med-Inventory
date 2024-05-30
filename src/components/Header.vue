@@ -1,3 +1,18 @@
+<script setup>
+import { ref } from 'vue';
+import { useLoginStore } from '../stores/login';
+
+const loginStore = useLoginStore()
+
+function logout(){
+    localStorage.removeItem('role');
+    localStorage.removeItem('access_token')
+    this.$router.push({ name: 'Login' });
+}
+
+const localRole = ref(localStorage.getItem('role'))
+</script>
+
 <template>
     <div class="nav">
         <div class="logo-container">
@@ -7,7 +22,7 @@
         </div>
         <div class="nav-links">
             <a href="/">Home</a>
-            <a href="/product-management">Product Management</a>
+            <a v-if="loginStore.loginRole =='Admin' && localRole == 'Admin'" href="/product-management">Product Management</a>
             <a href="#">Daftar Riwayat</a>
         </div>
         <div class="nav-right">
@@ -23,18 +38,18 @@
     </div>
 </template>
 
-<script>
+<!-- <script>
 export default {
     name: 'Header',
     methods: {
         logout() {
-            localStorage.removeItem('User');
+            localStorage.removeItem('role');
             localStorage.removeItem('access_token')
             this.$router.push({ name: 'Login' });
         }
     }
 }
-</script>
+</script> -->
 
 <style scoped>
 .nav {
