@@ -1,11 +1,31 @@
+<script setup>
+import { onMounted } from 'vue';
+import Header from '../components/Header.vue';
+import ItemCard from '../components/ItemCard.vue';
+import { useItemStore } from '../stores/items';
+import { useLoginStore } from '../stores/login';
+
+onMounted(()=>{
+    itemStore.getAllItem()
+})
+
+const userStore = useLoginStore()
+const itemStore = useItemStore()
+
+
+console.log(itemStore.items)
+
+</script>
+
 <template>
     <Header></Header>
     <div style="margin-left: 10%">
         <div class="welcome">
-            <h1> Hello {{ name }}, Welcome on MedInventory</h1>
+            <h1> Hello {{ userStore.userData.username }}, Welcome on MedInventory</h1>
         </div>
         <div class="product-grid">
-            <div v-for="item in itemInventory" :key="item.id" class="product-card">
+            <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item"/>
+            <!-- <div v-for="item in itemInventory" :key="item.id" class="product-card">
                 <img :src="item.image" :alt="item.name" class="product-image">
                 <div class="product-info">
                     <h3>{{ item.itemName }}</h3>
@@ -14,12 +34,12 @@
                     <button class="detail-button">Detail</button>
                     <button class="add-to-cart-button">Add to Cart</button>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
-<script>
+<!-- <script>
 import Header from '../components/Header.vue';
 import axios from 'axios';
 
@@ -62,7 +82,7 @@ export default {
         },
     },
 };
-</script>
+</script> -->
 
 <style scoped>
 .product-grid {

@@ -12,29 +12,50 @@
     </div>
 </template> -->
 
+<script setup>
+import {ref} from 'vue'
+import { useRegisterStore } from '../stores/register';
+
+const handleRegister = useRegisterStore()
+
+const formRegister = ref({
+    username:null,
+    email:null,
+    password:null,
+    passwordConfirmation:null,
+    phoneNumber:null
+})
+
+</script>
+
 <template>
     <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-md w-96">
             <h1 class="text-xl font-bold mb-6">Register</h1>
-            <form @submit.prevent="register">
+            <form @submit.prevent="handleRegister.handleRegisterUser(formRegister)">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
-                    <input type="name" v-model="name" required
+                    <input type="name" v-model="formRegister.username" required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                    <input type="email" v-model="email" required
+                    <input type="email" v-model="formRegister.email" required
+                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Phone Number</label>
+                    <input type="text" v-model="formRegister.phoneNumber" required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                    <input type="password" v-model="password" required
+                    <input type="password" v-model="formRegister.password" required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Confirm Password</label>
-                    <input type="password" v-model="confirmPassword" required
+                    <input type="password" v-model="formRegister.passwordConfirmation" required
                         class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 </div>
                 <div class="flex items-center justify-between">
@@ -50,10 +71,11 @@
         </div>
     </div>
 </template>
-
+<!-- 
 <script>
 import axios from 'axios'
 import Home from '../views/Home.vue';
+import { useRegisterStore } from '../stores/register';
 
 export default {
     name: 'SignUp',
@@ -99,4 +121,4 @@ export default {
       // Perform registration logic
     }
 }
-</script>
+</script> -->
