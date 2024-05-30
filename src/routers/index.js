@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import ProductManagement from '../views/ProductManagement.vue'
 import Profile from '../views/Profile.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import LoginAdmin from '../components/LoginAdmin.vue'
 
 const routes = [
     {
@@ -21,6 +22,11 @@ const routes = [
         path: '/login',
         name: 'Login',
         component: Login
+    },
+    {
+        path: '/login-admin',
+        name: 'LoginAdmin',
+        component: LoginAdmin
     },
     {
         path: '/product-management',
@@ -41,9 +47,9 @@ const router= createRouter({
 
 router.beforeEach((to,from,next)=>{
     const isAuth = localStorage.access_token
-    if(isAuth &&  ( to.name === 'Login'|| to.name === 'SignUp')){
+    if(isAuth &&  ( to.name === 'Login'|| to.name === 'SignUp' || to.name === 'LoginAdmin')){
       next({name:'Home'})
-    } else if(!isAuth  &&  (to.name !== 'Login' && to.name !== 'SignUp')){
+    } else if(!isAuth  &&  (to.name !== 'Login' && to.name !== 'SignUp' && to.name !== 'LoginAdmin')){
       next({name:'Login'})
     } else{
       next()
