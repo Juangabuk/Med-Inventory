@@ -1,18 +1,20 @@
 <template>
-    <Header></Header>
-    <div style="margin-left: 10%">
-        <div class="welcome">
+    <div class="p-4">
+        <div class="welcome mt-5 text-left text-3xl">
             <h1> Hello {{ name }}, Welcome on MedInventory</h1>
         </div>
-        <div class="product-grid">
-            <div v-for="item in itemInventory" :key="item.id" class="product-card">
+        <div class="w-full grid gap-5 grid-flow-row sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mt-5">
+            <div v-for="item in itemInventory" :key="item.id" class="product-card w-full">
                 <img :src="item.image" :alt="item.name" class="product-image">
-                <div class="product-info">
-                    <h3>{{ item.itemName }}</h3>
+                <div class="product-info w-full mt-2">
+                    <h3 class="text-2xl my-2">{{ item.itemName }}</h3>
                     <p>Kategori: {{ item.kategori }}</p>
                     <p>Stok: {{ item.stok }}</p>
-                    <button class="detail-button">Detail</button>
-                    <button class="add-to-cart-button">Add to Cart</button>
+                    <div class="grid gap-1 w-full mt-2 p-3">
+                        <button class="detail-button">Detail</button>
+                        <button class="add-to-cart-button">Add to Cart</button>
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -65,14 +67,8 @@ export default {
 </script>
 
 <style scoped>
-.product-grid {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-}
 
 .product-card {
-    width: 200px;
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
@@ -98,12 +94,13 @@ export default {
 
 .detail-button,
 .add-to-cart-button {
-    margin-top: 10px;
     padding: 5px 10px;
     border: none;
     background-color: #007BFF;
     color: white;
     cursor: pointer;
+    transition: 0.3s;
+    width: 100%;
 }
 
 .detail-button:hover,

@@ -9,9 +9,6 @@ import Header from '../components/Header.vue'
     <main>
         <div class="container mt-5">
             <div class="row">
-                <div class="col-sm-2 my-sm-5 p-3">
-                    <Sidebar />
-                </div>
                 <div class="col my-sm-5 p-3">
                     <div class="card p-4 shadow-lg">
                         <h1>Account</h1>

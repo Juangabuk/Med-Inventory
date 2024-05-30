@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Header @open-add-modal="openAddModal"></Header>
+        <Button @open-add-modal="openAddModal"></Button>
         <div style="margin-left: 10%">
             <div class="add-item-button-container">
                 <button class="add-item-button" @click="openAddModal">Add Item</button>
