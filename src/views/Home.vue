@@ -1,7 +1,29 @@
+<script setup>
+import { computed, onMounted } from 'vue';
+import Header from '../components/Header.vue';
+import ItemCard from '../components/ItemCard.vue';
+import { useItemStore } from '../stores/items';
+import { useLoginStore } from '../stores/login';
+
+const userStore = useLoginStore()
+const itemStore = useItemStore()
+onMounted(()=>{
+    itemStore.getAllItem()
+})
+
+const userData = JSON.parse(localStorage.getItem('user_data'))
+
+
+
+
+
+
+</script>
+
 <template>
     <div class="p-4">
         <div class="welcome mt-5 text-left text-3xl">
-            <h1> Hello {{ name }}, Welcome on MedInventory</h1>
+            <h1> Hello {{ userData.username}}, Welcome on MedInventory</h1>
         </div>
         <div class="w-full grid gap-5 grid-flow-row sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mt-5">
             <div v-for="item in itemInventory" :key="item.id" class="product-card w-full">
@@ -16,12 +38,12 @@
 
                     </div>
                 </div>
-            </div>
+            </div> 
         </div>
     </div>
 </template>
 
-<script>
+<!-- <script>
 import Header from '../components/Header.vue';
 import axios from 'axios';
 
@@ -64,7 +86,7 @@ export default {
         },
     },
 };
-</script>
+</script> -->
 
 <style scoped>
 

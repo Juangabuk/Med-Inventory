@@ -1,3 +1,18 @@
+<script setup>
+import { ref } from 'vue';
+import { useLoginStore } from '../stores/login';
+
+const loginStore = useLoginStore()
+
+function logout(){
+    localStorage.removeItem('role');
+    localStorage.removeItem('access_token')
+    this.$router.push({ name: 'Login' });
+}
+
+const localRole = ref(localStorage.getItem('role'))
+</script>
+
 <template>
     <div class="nav">
         <div class="logo-container">
@@ -20,17 +35,18 @@
     </div>
 </template>
 
-<script>
+<!-- <script>
 export default {
     name: 'Header',
     methods: {
         logout() {
-            localStorage.removeItem('user-info');
+            localStorage.removeItem('role');
+            localStorage.removeItem('access_token')
             this.$router.push({ name: 'Login' });
         }
     }
 }
-</script>
+</script> -->
 
 <style scoped>
 .nav {

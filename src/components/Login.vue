@@ -1,3 +1,17 @@
+<script setup>
+import { useLoginStore } from '../stores/login';
+import {ref} from 'vue'
+
+const handleLogin = useLoginStore()
+
+const formLogin = ref({
+    email:null,
+    password:null
+})
+
+</script>
+
+
 <template>
     <div class="min-h-screen grid grid-cols-2 bg-gray-100">
         <div class="w-full bg-white flex justify-center flex-col text-left px-24">
@@ -42,7 +56,7 @@
     </div>
 </template>
 
-<script>
+<!-- <script>
 import Home from '../views/Home.vue';
 import axios from 'axios';
 import { reactive } from 'vue';
@@ -68,7 +82,7 @@ export default {
         }
     }
 };
-</script>
+</script> -->
 
 <style>
 body {

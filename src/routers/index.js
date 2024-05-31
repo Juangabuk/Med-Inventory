@@ -5,6 +5,7 @@ import Login from '../components/Login.vue'
 import ProductManagement from '../views/ProductManagement.vue'
 import Profile from '../views/Profile.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import LoginAdmin from '../components/LoginAdmin.vue'
 
 const routes = [
     {
@@ -23,6 +24,11 @@ const routes = [
         component: Login
     },
     {
+        path: '/login-admin',
+        name: 'LoginAdmin',
+        component: LoginAdmin
+    },
+    {
         path: '/product-management',
         name: 'ProductManagement',
         component: ProductManagement
@@ -38,6 +44,17 @@ const router= createRouter({
     history:createWebHistory(),
     routes
 })
+
+router.beforeEach((to,from,next)=>{
+    const isAuth = localStorage.access_token
+    if(isAuth &&  ( to.name === 'Login'|| to.name === 'SignUp' || to.name === 'LoginAdmin')){
+      next({name:'Home'})
+    } else if(!isAuth  &&  (to.name !== 'Login' && to.name !== 'SignUp' && to.name !== 'LoginAdmin')){
+      next({name:'Login'})
+    } else{
+      next()
+    }
+  })
 
 export default router;
 
