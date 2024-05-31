@@ -23,7 +23,7 @@ export default {
   setup() {
     const route = useRoute();
     const showSidebarAndHeader = computed(() => {
-      return route.path !== '/sign-up' && route.path !== '/login';
+      return route.path !== '/sign-up' && route.path !== '/login' && route.path !== '/login-admin' && route.path !== '/register-admin';
     });
 
     const mainContentClass = computed(() => {

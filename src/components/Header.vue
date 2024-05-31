@@ -1,13 +1,19 @@
 <script setup>
 import { ref } from 'vue';
 import { useLoginStore } from '../stores/login';
+import { useRouter } from 'vue-router';
 
 const loginStore = useLoginStore()
+const router = useRouter()
 
 function logout(){
     localStorage.removeItem('role');
     localStorage.removeItem('access_token')
     this.$router.push({ name: 'Login' });
+}
+
+function clickLink(path){
+    router.push(path)
 }
 
 const localRole = ref(localStorage.getItem('role'))
@@ -26,7 +32,7 @@ const localRole = ref(localStorage.getItem('role'))
             <div class="dropdown">
                 <button class="dropbtn">Account</button>
                 <div class="dropdown-content">
-                    <a href="/profile">Profile</a>
+                    <a @click.prevent="clickLink('/profile')">Profile</a>
                     <a href="/login" @click="logout">Logout</a>
                 </div>
             </div>

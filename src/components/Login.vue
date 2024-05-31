@@ -28,15 +28,15 @@ const formLogin = ref({
         <div class="w-full h-full flex justify-center items-center">
             <div class="bg-white p-8 rounded-lg shadow-md w-96 text-left">
                 <h1 class="text-xl font-bold mb-6 text-center">Login</h1>
-                <form @submit.prevent="login">
+                <form @submit.prevent="handleLogin.handleLoginUser(formLogin)">
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                        <input type="email" v-model="email" required
+                        <input type="email" v-model="formLogin.email" required
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
                     <div class="mb-6">
                         <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-                        <input type="password" v-model="password" required
+                        <input type="password" v-model="formLogin.password" required
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
                     <div class="grid grid-cols-3">

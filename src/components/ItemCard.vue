@@ -5,50 +5,45 @@ import { ref } from 'vue';
 import ModalDetail from './ModalDetail.vue';
 import { useItemStore } from '../stores/items';
 
-const item  = defineProps(['item'])
+const item = defineProps(['item'])
 
 const itemStore = useItemStore();
-const imageUrl = ref(backendUrl +'/static/'+ item.item.gambar)
+const imageUrl = ref(backendUrl + '/static/' + item.item.gambar)
 
 const isModalVisible = ref(null)
 const singleItemDetail = ref(null)
 
 async function showModal(id) {
-        await itemStore.getDetailItem(id)
-        singleItemDetail.value = itemStore.detailItem
-        isModalVisible.value = true;
-      }
+    await itemStore.getDetailItem(id)
+    singleItemDetail.value = itemStore.detailItem
+    isModalVisible.value = true;
+}
 function closeModal() {
-        isModalVisible.value = false;
-      }
+    isModalVisible.value = false;
+}
 
 </script>
 
 <template>
-     <div class="product-card">
-        <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
-        <div class="product-info">
-            <h3>{{ item.item.namaBarang }}</h3>
-            <p>Kategori: {{ item.item.kategori }}</p>
-            <p>Stok: {{ item.item.jumlah }}</p>
-            <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
-            <button class="add-to-cart-button">Add to Cart</button>
-        </div>
+    <div class="product-card" >
+            <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
+            <div class="product-info">
+                <h3>{{ item.item.namaBarang }}</h3>
+                <p>Kategori: {{ item.item.kategori }}</p>
+                <p>Stok: {{ item.item.jumlah }}</p>
+                <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
+                <button class="add-to-cart-button">Add to Cart</button>
+            </div>
+        <ModalDetail v-if="isModalVisible" @close="closeModal" />
     </div>
-    <ModalDetail
-      v-if="isModalVisible"
-      @close="closeModal"
-    />
 </template>
-   
 
-<style>
 
-.product-card {
-    width: 200px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: center;
+<style scoped>
+.product-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
 }
 
 .product-image {
@@ -70,6 +65,4 @@ function closeModal() {
 .add-to-cart-button:hover {
     background-color: #0056b3;
 }
-
-
 </style>
