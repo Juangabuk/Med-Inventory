@@ -2,10 +2,25 @@
 import { useRouter } from 'vue-router';
 import { backendUrl } from '../varConstants';
 import { ref } from 'vue';
+import ModalDetail from './ModalDetail.vue';
+import { useItemStore } from '../stores/items';
+
 const item  = defineProps(['item'])
 
-
+const itemStore = useItemStore();
 const imageUrl = ref(backendUrl +'/static/'+ item.item.gambar)
+
+const isModalVisible = ref(null)
+const singleItemDetail = ref(null)
+
+async function showModal(id) {
+        await itemStore.getDetailItem(id)
+        singleItemDetail.value = itemStore.detailItem
+        isModalVisible.value = true;
+      }
+function closeModal() {
+        isModalVisible.value = false;
+      }
 
 </script>
 
@@ -16,10 +31,14 @@ const imageUrl = ref(backendUrl +'/static/'+ item.item.gambar)
             <h3>{{ item.item.namaBarang }}</h3>
             <p>Kategori: {{ item.item.kategori }}</p>
             <p>Stok: {{ item.item.jumlah }}</p>
-            <button class="detail-button">Detail</button>
+            <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
             <button class="add-to-cart-button">Add to Cart</button>
         </div>
     </div>
+    <ModalDetail
+      v-if="isModalVisible"
+      @close="closeModal"
+    />
 </template>
    
 

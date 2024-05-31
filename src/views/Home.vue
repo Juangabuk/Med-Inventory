@@ -1,19 +1,22 @@
 <script setup>
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import Header from '../components/Header.vue';
 import ItemCard from '../components/ItemCard.vue';
 import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
 
+const userStore = useLoginStore()
+const itemStore = useItemStore()
 onMounted(()=>{
     itemStore.getAllItem()
 })
 
-const userStore = useLoginStore()
-const itemStore = useItemStore()
+const userData = JSON.parse(localStorage.getItem('user_data'))
 
 
-console.log(itemStore.items)
+
+
+
 
 </script>
 
@@ -21,7 +24,7 @@ console.log(itemStore.items)
     <Header></Header>
     <div style="margin-left: 10%">
         <div class="welcome">
-            <h1> Hello {{ userStore.userData.username }}, Welcome on MedInventory</h1>
+            <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
         </div>
         <div class="product-grid">
             <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item"/>

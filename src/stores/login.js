@@ -14,7 +14,7 @@ export const useLoginStore = defineStore('login', ()=>{
     const loginRole = ref(null)
 
     const handleLoginUser = async (input)=>{
-
+        console.log(backendUrl)
         try{
 
             const {data} = await axios({
@@ -27,6 +27,7 @@ export const useLoginStore = defineStore('login', ()=>{
             loginRole.value = "Admin"
             localStorage.setItem('access_token', data.access_token)
             localStorage.setItem('role', "User")
+            localStorage.setItem('user_data',JSON.stringify(data.data))
             
             Swal.fire({
                 toast: true,
@@ -68,6 +69,7 @@ export const useLoginStore = defineStore('login', ()=>{
             loginRole.value = "Admin"
             localStorage.setItem('access_token', data.access_token)
             localStorage.setItem('role', "Admin")
+            localStorage.setItem('user_data',JSON.stringify(data.data))
             
             Swal.fire({
                 toast: true,
