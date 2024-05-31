@@ -17,13 +17,10 @@ const localRole = ref(localStorage.getItem('role'))
     <div class="nav">
         <div class="logo-container">
             <router-link to="/"
-                class="AMS text-blue-500 hover:text-blue-800 px-3 py-2 rounded-md text-sm font-medium">Med-Inventory</router-link>
+                class="AMS bg-slate-950 py-3 text-red-500 hover:text-red-200 px-3 rounded-md text-sm font-medium">
+                Med-Inventory
+            </router-link>
             <span class="asm">Inventory Management System</span>
-        </div>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a v-if="loginStore.loginRole =='Admin' && localRole == 'Admin'" href="/product-management">Product Management</a>
-            <a href="#">Daftar Riwayat</a>
         </div>
         <div class="nav-right">
             <div class="dropdown">
@@ -61,11 +58,6 @@ export default {
     width: 100%;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
-}
-
-.nav a:hover {
-    background: #ddd;
-    color: #333;
 }
 
 .nav-links {
@@ -174,8 +166,6 @@ export default {
     border-radius: 4px;
     font-size: 30px;
     font-weight: bold;
-    color: #ff0000;
-    background-color: #000000;
 }
 
 .asm {

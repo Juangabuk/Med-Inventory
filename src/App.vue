@@ -1,29 +1,61 @@
 <template>
-  <RouterView />
+  <div class="flex gap-2 bg-slate-50 text-slate-950 w-screen">
+    <Sidebar v-if="showSidebarAndHeader" />
+    <div :class="mainContentClass">
+      <Header v-if="showSidebarAndHeader" />
+      <RouterView />
+    </div>
+  </div>
 </template>
 
 <script>
-// import HelloWorld from './components/HelloWorld.vue'
-import SignUp from './components/SignUp.vue';
-import { RouterView } from 'vue-router'
+import Header from './components/Header.vue';
+import Sidebar from './components/Sidebar.vue';
+import { RouterView, useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 export default {
   name: 'App',
   components: {
-    SignUp,
-    Headers,
+    Sidebar,
+    Header
+  },
+  setup() {
+    const route = useRoute();
+    const showSidebarAndHeader = computed(() => {
+      return route.path !== '/sign-up' && route.path !== '/login';
+    });
+
+    const mainContentClass = computed(() => {
+      return showSidebarAndHeader.value 
+        ? 'w-full h-screen overflow-y-scroll' 
+        : 'w-screen h-screen overflow-y-scroll';
+    });
+
+    return {
+      showSidebarAndHeader,
+      mainContentClass
+    };
   }
 }
 </script>
 
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400&display=swap");
-#app {
+:root {
   font-family: Montserrat;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* text-align: center; */
-  margin-top: 60px;
-  color: #212f3d;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+}
+#app{
+  padding: 0;
+  margin: 0;
+}
+
+input{
+    background-color: #ffffff;
 }
 </style>
