@@ -1,6 +1,7 @@
 <script setup>
 import { defineProps, defineEmits, ref, onMounted, onBeforeMount } from "vue"
 import { useItemStore } from "../stores/items";
+import { backendUrl } from "../varConstants";
 
 const emit = defineEmits(["close"]);
 
@@ -10,6 +11,7 @@ const itemStore = useItemStore()
 //     itemStore.getDetailItem(id)
 // })
 
+const imageUrl = backendUrl + '/static/' + itemStore.detailItem.gambar;
 
 </script>
 
@@ -18,7 +20,7 @@ const itemStore = useItemStore()
       <div class="modal">
         <header class="modal-header">
           <slot name="header">
-            {{ itemStore.detailItem.namaBarang }}
+            <h2 class="text-lg font-semibold">Detail Item</h2>
           </slot>
           <button
             type="button"
@@ -30,14 +32,27 @@ const itemStore = useItemStore()
         </header>
   
         <section class="modal-body">
-          <slot name="body">
-            {{itemStore.detailItem.deskripsi}}
-          </slot>
+          <div class="my-2">
+            <h1 class="">{{ itemStore.detailItem.namaBarang }}</h1>
+            <div class="flex flex-row align-content-center">
+              <div class="basis-1/2">
+                <img :src="imageUrl" :alt="itemStore.detailItem.namaBarang">
+              </div>
+              <div class="basis-1/2 flex flex-col">
+                <div class="div-desc basis-4/5 pt-2">
+                  <p class="description">{{itemStore.detailItem.deskripsi}}</p>
+                </div>
+                <div class="basis-1/5 justify-self-start">
+                  <p>Quota: {{ itemStore.detailItem.jumlah }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
          </section>
   
         <footer class="modal-footer">
           <slot name="footer">
-            {{itemStore.detailItem.jumlah}}
+
           </slot>
           <button
             type="button"
@@ -51,7 +66,7 @@ const itemStore = useItemStore()
     </div>
   </template>
 
-<style>
+<style scoped>
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -70,6 +85,10 @@ const itemStore = useItemStore()
   overflow-x: auto;
   display: flex;
   flex-direction: column;
+  max-height:55%;
+  max-width:25%;
+  border-radius: 3%;
+  overflow: hidden;
 }
 
 .modal-header,
@@ -81,7 +100,7 @@ const itemStore = useItemStore()
 .modal-header {
   position: relative;
   border-bottom: 1px solid #eeeeee;
-  color: #4AAE9B;
+  color: black;
   justify-content: space-between;
 }
 
@@ -105,14 +124,25 @@ const itemStore = useItemStore()
   padding: 10px;
   cursor: pointer;
   font-weight: bold;
-  color: #4AAE9B;
+  color: black;
   background: transparent;
 }
 
 .btn-green {
   color: white;
-  background: #4AAE9B;
-  border: 1px solid #4AAE9B;
-  border-radius: 2px;
+  background: #0d4dbc;
+  border: 1px solid #0d4dbc;
+  border-radius: 2%;
 }
+
+img{
+  width:20rem;
+  object-fit: cover;
+}
+
+.div-desc{
+  word-wrap: break-word;
+}
+
+
 </style>

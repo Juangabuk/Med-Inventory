@@ -4,6 +4,7 @@ import Header from '../components/Header.vue';
 import ItemCard from '../components/ItemCard.vue';
 import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
+import Pagination from '../components/Pagination.vue';
 
 onMounted(() => {
     itemStore.getAllItem()
@@ -70,6 +71,7 @@ const userData = JSON.parse(localStorage.getItem('user_data'))
                 </div> -->
             </div>
         </div>
+        <Pagination/>
         <Modal :visible="isModalVisible" @close="closeAddModal" @add-item="addItem"></Modal>
     </div>
 </template>

@@ -22,6 +22,8 @@ function closeModal() {
     isModalVisible.value = false;
 }
 
+
+
 </script>
 
 <template>
@@ -32,7 +34,9 @@ function closeModal() {
                 <p>Kategori: {{ item.item.kategori }}</p>
                 <p>Stok: {{ item.item.jumlah }}</p>
                 <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
-                <button class="add-to-cart-button">Add to Cart</button>
+                <button v-show="$route.name =='Home'" class="add-to-cart-button">Add to Cart</button>
+                <button class="edit-button" v-show="$route.name == 'ProductManagement'">Edit Item</button>
+                <button class="delete-button" v-show="$route.name == 'ProductManagement'">Delete Item</button>
             </div>
         <ModalDetail v-if="isModalVisible" @close="closeModal" />
     </div>
@@ -64,5 +68,31 @@ function closeModal() {
 .detail-button:hover,
 .add-to-cart-button:hover {
     background-color: #0056b3;
+}
+
+.edit-button{
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #f0ae12;
+    color: white;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    background-color: #f08812;
+}
+
+.delete-button{
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #f02112;
+    color: white;
+    cursor: pointer;
+}
+
+.delete-button:hover{
+    background-color: #f01212;
 }
 </style>

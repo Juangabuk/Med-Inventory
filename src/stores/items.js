@@ -12,16 +12,22 @@ export const useItemStore = defineStore('item', ()=>{
 
     const items = ref(null)
     const detailItem = ref(null)
+    const totalItem = ref(0)
+    const totalPages = ref(1)
+    const numberItemPerPage = ref(5)
 
-    const getAllItem = async()=>{
+    const getAllItem = async(page = 1)=>{
 
         try{
             const {data} = await axios({
                 method:'get',
-                url: `${baseUrl}/user/items?sort=id&page[size]=5&page[number]=1`
+                url: `${baseUrl}/user/items?sort=id&page[size]=5&page[number]=${page}`
             })
 
             items.value = data.data
+            totalItem.value = data.length
+            totalPages.value= Math.ceil(data.length / numberItemPerPage.value)
+            console.log("total",totalPages)
   
         }
         catch(err){
@@ -62,5 +68,5 @@ export const useItemStore = defineStore('item', ()=>{
         }
     }
 
-    return {getAllItem, getDetailItem, items, detailItem}
+    return {getAllItem, getDetailItem, items, detailItem, totalPages}
 })
