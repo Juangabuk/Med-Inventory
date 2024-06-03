@@ -49,7 +49,7 @@ function clickLink(path){
         </div>
         <div :class="itemsClass" class="flex flex-col gap-4">
             <a @click.prevent="clickLink('/')" class="w-64 px-4" >🏡 Home</a>
-            <a @click.prevent="clickLink('#')" class="w-64 px-4" >📓 Daftar Riwayat</a>
+            <a @click.prevent="clickLink('history')" class="w-64 px-4" >📓 Daftar Riwayat</a>
             <a @click.prevent="clickLink('/product-management')" class="w-64 px-4" v-if="localRole == 'Admin'"  href="/product-management">📦 Product Management</a>
         </div>
 </div>

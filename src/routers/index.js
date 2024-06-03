@@ -4,6 +4,7 @@ import SignUp from '../components/SignUp.vue'
 import Login from '../components/Login.vue'
 import ProductManagement from '../views/ProductManagement.vue'
 import Profile from '../views/Profile.vue'
+import History from '../views/History.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginAdmin from '../components/LoginAdmin.vue'
 
@@ -32,6 +33,11 @@ const routes = [
         path: '/product-management',
         name: 'ProductManagement',
         component: ProductManagement
+    },
+    {
+        path: '/history',
+        name: 'History',
+        component: History
     },
     {
         path: '/profile',
