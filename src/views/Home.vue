@@ -1,20 +1,23 @@
 <script setup>
-import { onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import Header from '../components/Header.vue';
 import ItemCard from '../components/ItemCard.vue';
 import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
+import Pagination from '../components/Pagination.vue';
+
+const userStore = useLoginStore()
+const itemStore = useItemStore()
 
 onMounted(()=>{
+    console.log("hit")
     itemStore.getAllItem()
 })
 
 
 
-const userStore = useLoginStore()
-const itemStore = useItemStore()
-
 const userData = JSON.parse(localStorage.getItem('user_data'))
+
 
 
 
@@ -25,7 +28,7 @@ const userData = JSON.parse(localStorage.getItem('user_data'))
 
 <template>
     <!-- <Header></Header> -->
-    <div style="margin-left: 10%">
+    <div style="margin-left: 2%">
         <div class="welcome mt-5 text-left text-3xl">
             <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
         </div>
@@ -59,6 +62,12 @@ const userData = JSON.parse(localStorage.getItem('user_data'))
                 </div> -->
             <!-- </div> -->
         </div>
+        <Pagination />
+        <!-- <div class="pagination mt-5">
+            <button class="pagination-button" @click="updatePageNumber(currPage - 1)" :disabled="currPage === 1">Previous</button>
+            <span>{{ currPage }}</span>
+            <button class="pagination-button" @click="updatePageNumber(currPage + 1)" :disabled="currPage === itemStore.totalPages">Next</button>
+        </div> -->
     </div>
 </template>
 
@@ -270,5 +279,7 @@ input:focus {
     outline: none;
     border-color: #63b3ed; /* Tailwind's blue-300 */
 }
+
+
 
 </style>
