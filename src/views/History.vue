@@ -1,3 +1,15 @@
+<script setup>
+import { onMounted } from 'vue';
+import {useRentStore} from '../stores/Rent'
+
+
+const rent = useRentStore()
+
+onMounted(()=>{
+    rent.getAllHistory()
+})
+
+</script>
 <template>
     <div class="history-table">
       <h1>History</h1>
@@ -22,9 +34,9 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in filteredItems" :key="item.id">
+          <tr v-for="(item, index) in rent.items" :key="item.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.Item.namaBarang }}</td>
+            <td>{{ item.item.namaBarang }}</td>
             <td>{{ item.item.jumlah }}</td>
             <td>{{ formatDate(item.tanggalPinjam) }}</td>
             <td>{{ formatDate(item.tanggalKembali) }}</td>
@@ -35,7 +47,9 @@
     </div>
   </template>
   
-  <script>
+  <!-- <script>
+import { backendUrl } from '../varConstants';
+
   export default {
     data() {
       return {
@@ -54,7 +68,7 @@
       },
       fetchData() {
         // Replace this URL with your actual API endpoint
-        fetch('https://api.yourdomain.com/endpoint')
+        fetch( `${backendUrl}/admin/rented-item`)
           .then(response => response.json())
           .then(data => {
             this.items = data.data;
@@ -70,7 +84,7 @@
       this.fetchData();
     }
   };
-  </script>
+  </script> -->
   
   <style scoped>
   .history-table {
