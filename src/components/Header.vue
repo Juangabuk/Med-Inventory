@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { useLoginStore } from '../stores/login';
 import { useRouter } from 'vue-router';
+import ModalCart from './ModalCart.vue'
 
 const loginStore = useLoginStore()
 const router = useRouter()
@@ -9,11 +10,23 @@ const router = useRouter()
 function logout(){
     localStorage.removeItem('role');
     localStorage.removeItem('access_token')
+    localStorage.removeItem('user_data')
+    localStorage.removeItem('items')
     this.$router.push({ name: 'Login' });
 }
 
 function clickLink(path){
     router.push(path)
+}
+
+const isModalCartVisible = ref(null)
+
+async function showModalCart(id) {
+    isModalCartVisible.value = true;
+}
+
+function closeModalCart() {
+    isModalCartVisible.value = false;
 }
 
 const localRole = ref(localStorage.getItem('role'))
@@ -29,6 +42,7 @@ const localRole = ref(localStorage.getItem('role'))
             <span class="asm">Inventory Management System</span>
         </div>
         <div class="nav-right">
+            <button @click="showModalCart" class="dropbtn">Cart</button>
             <div class="dropdown">
                 <button class="dropbtn">Account</button>
                 <div class="dropdown-content">
@@ -38,6 +52,7 @@ const localRole = ref(localStorage.getItem('role'))
             </div>
             <img class="profile-pic" src="https://picsum.photos/200/300?grayscale" alt="Profile Picture">
         </div>
+        <ModalCart v-if="isModalCartVisible" @close="closeModalCart"/>
     </div>
 </template>
 

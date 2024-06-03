@@ -4,6 +4,7 @@ import { backendUrl } from '../varConstants';
 import { ref } from 'vue';
 import ModalDetail from './ModalDetail.vue';
 import { useItemStore } from '../stores/items';
+import Swal from 'sweetalert2';
 
 const item = defineProps(['item'])
 
@@ -11,17 +12,53 @@ const itemStore = useItemStore();
 const imageUrl = ref(backendUrl + '/static/' + item.item.gambar)
 
 const isModalVisible = ref(null)
-const singleItemDetail = ref(null)
 
 async function showModal(id) {
     await itemStore.getDetailItem(id)
-    singleItemDetail.value = itemStore.detailItem
     isModalVisible.value = true;
 }
 function closeModal() {
     isModalVisible.value = false;
 }
 
+function addToCart(id){
+    const items = JSON.parse(localStorage.getItem('items'));
+    const userData = JSON.parse(localStorage.getItem('user_data'))
+    if (items == null){
+        const item = {
+            userId: userData.id,
+            itemId: id
+        }
+        localStorage.setItem('items',JSON.stringify([item]))
+
+        Swal.fire({
+                    title: "Success",
+                    text: "Item successfully put in cart",
+                    icon: "success"
+                })
+    } else{
+        for (let item of items){
+            if (item.itemId === id){
+                Swal.fire({
+                    title: "Oops",
+                    text: "You have put this item in the cart",
+                    icon: "warning"
+                })
+                return
+            }
+        }
+        items.push({
+                userId: userData.id,
+                itemId: id
+        })
+        localStorage.setItem('items', JSON.stringify(items))
+        Swal.fire({
+                    title: "Success",
+                    text: "Item successfully put in cart",
+                    icon: "success"
+                })
+    }
+}
 
 
 </script>
@@ -34,7 +71,7 @@ function closeModal() {
                 <p>Kategori: {{ item.item.kategori }}</p>
                 <p>Stok: {{ item.item.jumlah }}</p>
                 <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
-                <button v-show="$route.name =='Home'" class="add-to-cart-button">Add to Cart</button>
+                <button v-show="$route.name =='Home'" class="add-to-cart-button" @click="addToCart(item.item.id)">Add to Cart</button>
                 <button class="edit-button" v-show="$route.name == 'ProductManagement'">Edit Item</button>
                 <button class="delete-button" v-show="$route.name == 'ProductManagement'">Delete Item</button>
             </div>

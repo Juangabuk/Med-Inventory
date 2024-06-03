@@ -68,5 +68,36 @@ export const useItemStore = defineStore('item', ()=>{
         }
     }
 
-    return {getAllItem, getDetailItem, items, detailItem, totalPages}
+    const postRentItems = async ()=>{
+        try {
+            const items = localStorage.getItem('items')
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Make sure you have check your order",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Rent it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: "Success!",
+                    text: "Your rent has been processed",
+                    icon: "success"
+                  });
+                }
+              });
+        } catch (err) {
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                icon: 'error',
+                title: 'Process Failed',
+                text: `${err.response.data.message}`
+              });
+        }
+    }
+
+    return {getAllItem, getDetailItem, postRentItems, items, detailItem, totalPages}
 })
