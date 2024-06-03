@@ -9,6 +9,11 @@ onMounted(()=>{
     rent.getAllHistory()
 })
 
+function formatDate(date) {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        return new Date(date).toLocaleDateString('en-GB', options);
+      }
+
 </script>
 <template>
     <div class="history-table">
@@ -36,8 +41,8 @@ onMounted(()=>{
         <tbody>
           <tr v-for="(item, index) in rent.items" :key="item.id">
             <td>{{ index + 1 }}</td>
-            <td>{{ item.item.namaBarang }}</td>
-            <td>{{ item.item.jumlah }}</td>
+            <td>{{ item.Item.namaBarang }}</td>
+            <td>{{ item.jumlah }}</td>
             <td>{{ formatDate(item.tanggalPinjam) }}</td>
             <td>{{ formatDate(item.tanggalKembali) }}</td>
             <td><a :href="item.statusLink" class="status-link">{{ item.status }}</a></td>

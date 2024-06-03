@@ -20,7 +20,8 @@ export const useLoginStore = defineStore('login', ()=>{
             const {data} = await axios({
                 method:'post',
                 url: `${baseUrl}/user/login`,
-                data:input
+                data:input,
+                withCredentials:true
             })
 
             userData.value = data.data
@@ -62,7 +63,8 @@ export const useLoginStore = defineStore('login', ()=>{
             const {data} = await axios({
                 method:'post',
                 url: `${baseUrl}/admin/login`,
-                data:input
+                data:input,
+                withCredentials:true
             })
 
             userData.value = data.data
