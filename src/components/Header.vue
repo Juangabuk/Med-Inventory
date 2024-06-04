@@ -42,7 +42,7 @@ const localRole = ref(localStorage.getItem('role'))
             <span class="asm">Inventory Management System</span>
         </div>
         <div class="nav-right">
-            <button @click="showModalCart" class="dropbtn">Cart</button>
+            <button @click="showModalCart" class="dropbtn bi-cart-check">🛒 Cart</button>
             <div class="dropdown">
                 <button class="dropbtn">Account</button>
                 <div class="dropdown-content">
