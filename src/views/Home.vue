@@ -17,6 +17,10 @@ onMounted(()=>{
 
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
+let searchQuery = ref(null)
+function searchItems () {
+    itemStore.getAllItem(1,searchQuery.value)
+}
 
 
 

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import { useItemStore } from '../stores/items';
 
 const itemStore = useItemStore();
@@ -12,9 +12,14 @@ const updatePageNumber = (newVal) => {
     }
 };
 
-const pages = computed(() => {
-    const totalPages = itemStore.totalPages;
-    const maxPagesToShow = 5;
+const totalPages = ref (itemStore.totalPages);
+
+let pages = ref ([])
+
+watch(totalPages, () =>{
+    
+    console.log(totalPages, "ini total pages");
+    const maxPagesToShow = Math.min (5, totalPages);
     const half = Math.floor(maxPagesToShow / 2);
     let start = Math.max(1, currPage.value - half);
     let end = Math.min(totalPages, currPage.value + half);
@@ -23,12 +28,29 @@ const pages = computed(() => {
         start = Math.max(1, end - maxPagesToShow + 1);
     }
 
-    const pageNumbers = [];
     for (let i = start; i <= end; i++) {
-        pageNumbers.push(i);
+        pages.value.push(i);
     }
-    return pageNumbers;
-});
+})
+
+// const pages = computed(() => {
+//     const totalPages = itemStore.totalPages;
+//     console.log(totalPages, "ini total pages");
+//     const maxPagesToShow = Math.min (5, totalPages);
+//     const half = Math.floor(maxPagesToShow / 2);
+//     let start = Math.max(1, currPage.value - half);
+//     let end = Math.min(totalPages, currPage.value + half);
+
+//     if (end - start < maxPagesToShow - 1) {
+//         start = Math.max(1, end - maxPagesToShow + 1);
+//     }
+
+//     const pageNumbers = [];
+//     for (let i = start; i <= end; i++) {
+//         pageNumbers.push(i);
+//     }
+//     return pageNumbers;
+// });
 </script>
 
 <template>
