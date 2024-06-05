@@ -45,10 +45,10 @@ function searchItems () {
                 </button>
                 <div v-if="dropdownOpen" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
-                        <li @click="sortItems('stockDesc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terbanyak</li>
-                        <li @click="sortItems('stockAsc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah</li>
-                        <li @click="sortItems('nameDesc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (Z-A)</li>
-                        <li @click="sortItems('nameAsc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (A-Z)</li>
+                        <li @click="sortItems('Jumlah Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terbanyak</li>
+                        <li @click="sortItems('Jumlah Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah</li>
+                        <li @click="sortItems('Nama Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (Z-A)</li>
+                        <li @click="sortItems('Name Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (A-Z)</li>
                     </ul>
                 </div>
             </div>

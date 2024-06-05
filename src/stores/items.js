@@ -16,10 +16,30 @@ export const useItemStore = defineStore('item', ()=>{
     const totalPages = ref(1)
     const numberItemPerPage = ref(5)
 
-    const getAllItem = async(page = 1, search = null )=>{
+    const getAllItem = async(page = 1, search = null, sort = null )=>{
         let option = ''
         if (search != null) {
             option += `&search=${search}`
+        }
+
+        if (sort != null ) {
+            sort = sort.split(" ")
+            if (sort[0]=="Jumlah"){
+                if (sort[1]=="Asc"){
+                    option += `&sort=jumlah`
+                }
+                else if (sort[1]=="Desc"){
+                    option += `&sort=-jumlah`
+                }
+            }
+            else if (sort[0]=="Nama"){
+                if (sort[1]=="Asc"){
+                    option += `&sort=namaBarang`
+                }
+                else if (sort[1]=="Desc"){
+                    option += `&sort=-namaBarang`
+                }
+            }
         }
 
         try{
