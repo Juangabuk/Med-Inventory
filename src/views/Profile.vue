@@ -3,45 +3,91 @@ import Header from '../components/Header.vue'
 </script>
 
 <template>
-    <Header>
-
-    </Header>
     <main>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col my-sm-5 p-3">
+        <div class="container-fluid mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-10">
                     <div class="card p-4 shadow-lg">
-                        <h1>Account</h1>
-                        <div class="row justify-content-between">
-                            <div class="col-sm-6">
-                                <form>
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label fw-bold">Email</label>
-                                        <input type="email" class="form-control rounded-pill"
-                                            v-model="store.dataUserbyId.email" disabled readonly>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label fw-bold">Username</label>
-                                        <input type="text" class="form-control rounded-pill"
-                                            v-model="store.dataUserbyId.userName" disabled readonly>
-                                    </div>
-                                    <div class="form-outline mb-4">
-                                        <label class="form-label fw-bold">Phone Number</label>
-                                        <input type="text" class="form-control rounded-pill"
-                                            v-model="store.dataUserbyId.phoneNumber" disabled readonly>
-                                    </div>
-                                </form>
+                        <h1 class="fw-bold mb-4 text-start">Account</h1>
+                        <form>
+                            <div class="form-outline mb-4">
+                                <label class="form-label fw-bold text-start">Email</label>
+                                <input type="email" class="form-control rounded" value="admin1@mail.com" disabled>
                             </div>
-                            <div class="col-sm-2 p-2">
-                                <button class="btn btn-primary text-white rounded-pill w-100 mt-sm-3" type="button">
+                            <div class="form-outline mb-4">
+                                <label class="form-label fw-bold text-start">Username</label>
+                                <input type="text" class="form-control rounded" value="Admin-1" disabled>
+                            </div>
+                            <div class="form-outline mb-4">
+                                <label class="form-label fw-bold text-start">Phone Number</label>
+                                <input type="text" class="form-control rounded" value="123456789" disabled>
+                            </div>
+                            <!-- <div class="text-start">
+                                <button class="btn btn-primary text-white rounded-pill" type="button">
                                     <span class="bi bi-pencil"></span>
                                     &nbsp;Edit Data
                                 </button>
-                            </div>
-                        </div>
+                            </div> -->
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 </template>
+
+<style scoped>
+.container-fluid {
+    max-width: 100%;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.form-outline {
+    text-align: left; /* Ensure form elements are aligned left */
+}
+
+.form-outline input {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    color: #555;
+    padding: 10px 15px;
+    max-width: 400px; /* Set a max-width for the input boxes */
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.btn {
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+
+.text-start {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns content to the left */
+}
+
+h1 {
+    text-align: left;
+    width: 100%;
+    font-size: 20pt;
+    font-style:normal;
+}
+
+form {
+    width: 100%;
+}
+</style>
