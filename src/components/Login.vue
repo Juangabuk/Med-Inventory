@@ -1,12 +1,13 @@
 <script setup>
 import { useLoginStore } from '../stores/login';
-import {ref} from 'vue'
+import { ref } from 'vue'
+// import {logomediinv} from '../assets/logomediinv.png'
 
 const handleLogin = useLoginStore()
 
 const formLogin = ref({
-    email:null,
-    password:null
+    email: null,
+    password: null
 })
 
 </script>
@@ -16,15 +17,17 @@ const formLogin = ref({
     <div class="min-h-screen grid grid-cols-2 bg-gray-100">
         <div class="w-full bg-white flex justify-center flex-col text-left px-24">
             <h1 class="text-5xl text-left text-gray-900">
-                Med-Inventory
+                Medi-Inventory
             </h1>
             <p class="text-gray-600 my-4">
                 Inventory Management System
             </p>
+            <img src="../assets/logomediinv.webp" alt="Medi-Inventory Logo" class="self-center my-4">
             <p class="text-gray-600 mt-12">
                 One Application that keep tracks of your organization assets
             </p>
         </div>
+
         <div class="w-full h-full flex justify-center items-center">
             <div class="bg-white p-8 rounded-lg shadow-md w-96 text-left">
                 <h1 class="text-xl font-bold mb-6 text-center">Login</h1>
@@ -85,6 +88,10 @@ export default {
 </script> -->
 
 <style>
+/* img {
+    image-resolution: 
+}, */
+
 body {
     font-family: 'Montserrat', sans-serif;
 }

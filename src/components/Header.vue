@@ -37,7 +37,7 @@ const localRole = ref(localStorage.getItem('role'))
         <div class="logo-container">
             <router-link to="/"
                 class="AMS bg-slate-950 py-3 text-red-500 hover:text-red-200 px-3 rounded-md text-sm font-medium">
-                Med-Inventory
+                Medi-Inventory
             </router-link>
             <span class="asm">Inventory Management System</span>
         </div>

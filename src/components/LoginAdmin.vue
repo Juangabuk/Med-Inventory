@@ -16,7 +16,7 @@ const formLogin = ref({
     <div class="min-h-screen grid grid-cols-2 bg-gray-100">
         <div class="w-full bg-white flex justify-center flex-col text-left px-24">
             <h1 class="text-5xl text-left text-gray-900">
-                Med-Inventory
+                Medi-Inventory
             </h1>
             <p class="text-gray-600 my-4">
                 Inventory Management System
@@ -40,15 +40,13 @@ const formLogin = ref({
                             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                     </div>
                     <div class="grid grid-cols-3">
-                        <div></div>
                         <button
                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                             type="submit">Login</button>
-                        <div class="flex justify-end items-center">
+                        <!-- <div class="flex justify-end items-center">
                             <router-link to="/sign-up"
                                 class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800">REGISTER</router-link>
-
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </div>
