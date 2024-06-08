@@ -14,7 +14,7 @@ export const useItemStore = defineStore('item', ()=>{
     const detailItem = ref(null)
     const totalItem = ref(0)
     const totalPages = ref(1)
-    const numberItemPerPage = ref(5)
+    const numberItemPerPage = 5
 
     const getAllItem = async(page = 1, search = null, sort = null )=>{
         let option = ''
@@ -50,8 +50,9 @@ export const useItemStore = defineStore('item', ()=>{
 
             items.value = data.data
             totalItem.value = data.length
-            totalPages.value= Math.ceil(data.data.length / numberItemPerPage.value)
-            console.log("total",data.data.length)
+            totalPages.value= Math.ceil(data.length/ numberItemPerPage)
+            console.log(data.length)
+            console.log("total",totalPages)
   
         }
         catch(err){
