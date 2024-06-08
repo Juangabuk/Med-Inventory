@@ -1,5 +1,9 @@
 <script setup>
+import { ref } from 'vue';
 import Header from '../components/Header.vue'
+
+const userData = JSON.parse(localStorage.getItem('user_data'))
+
 </script>
 
 <template>
@@ -12,15 +16,15 @@ import Header from '../components/Header.vue'
                         <form>
                             <div class="form-outline mb-4">
                                 <label class="form-label fw-bold text-start">Email</label>
-                                <input type="email" class="form-control rounded" value="admin1@mail.com" disabled>
+                                <input type="email" class="form-control rounded" :value="userData.email" disabled>
                             </div>
                             <div class="form-outline mb-4">
                                 <label class="form-label fw-bold text-start">Username</label>
-                                <input type="text" class="form-control rounded" value="Admin-1" disabled>
+                                <input type="text" class="form-control rounded" :value="userData.username" disabled>
                             </div>
                             <div class="form-outline mb-4">
                                 <label class="form-label fw-bold text-start">Phone Number</label>
-                                <input type="text" class="form-control rounded" value="123456789" disabled>
+                                <input type="text" class="form-control rounded" :value="userData.phoneNumber" disabled>
                             </div>
                             <!-- <div class="text-start">
                                 <button class="btn btn-primary text-white rounded-pill" type="button">

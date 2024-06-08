@@ -59,26 +59,23 @@ function addToCart(id){
                 })
     }
 }
-
-
 </script>
 
 <template>
-    <div class="product-card" >
-            <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
-            <div class="product-info">
-                <h3>{{ item.item.namaBarang }}</h3>
-                <p>Kategori: {{ item.item.kategori }}</p>
-                <p>Stok: {{ item.item.jumlah }}</p>
-                <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
-                <button v-show="$route.name =='Home'" class="add-to-cart-button" @click="addToCart(item.item.id)">Add to Cart</button>
-                <button class="edit-button" v-show="$route.name == 'ProductManagement'">Edit Item</button>
-                <button class="delete-button" v-show="$route.name == 'ProductManagement'">Delete Item</button>
-            </div>
+    <div class="product-card">
+        <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
+        <div class="product-info">
+            <h3>{{ item.item.namaBarang }}</h3>
+            <p>Kategori: {{ item.item.kategori }}</p>
+            <p>Stok: {{ item.item.jumlah }}</p>
+            <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
+            <button v-show="$route.name =='Home'" class="add-to-cart-button" @click="addToCart(item.item.id)">Add to Cart</button>
+            <button class="edit-button" v-show="$route.name == 'ProductManagement'">Edit Item</button>
+            <button class="delete-button" v-show="$route.name == 'ProductManagement'">Delete Item</button>
+        </div>
         <ModalDetail v-if="isModalVisible" @close="closeModal" />
     </div>
 </template>
-
 
 <style scoped>
 .product-grid {
@@ -88,8 +85,9 @@ function addToCart(id){
 }
 
 .product-image {
-    width: 100%;
-    height: auto;
+    width: 200px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensures the image is centered and covers the area */
 }
 
 .detail-button,
@@ -107,7 +105,7 @@ function addToCart(id){
     background-color: #0056b3;
 }
 
-.edit-button{
+.edit-button {
     margin-top: 10px;
     padding: 5px 10px;
     border: none;
@@ -120,7 +118,7 @@ function addToCart(id){
     background-color: #f08812;
 }
 
-.delete-button{
+.delete-button {
     margin-top: 10px;
     padding: 5px 10px;
     border: none;
@@ -129,7 +127,7 @@ function addToCart(id){
     cursor: pointer;
 }
 
-.delete-button:hover{
+.delete-button:hover {
     background-color: #f01212;
 }
 </style>

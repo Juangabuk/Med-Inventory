@@ -9,16 +9,27 @@ import Pagination from '../components/Pagination.vue';
 const userStore = useLoginStore()
 const itemStore = useItemStore()
 
-const dropdownOpen = ref(false)
+const dropdownOpenSort = ref(false)
+const dropdownOpenFilter = ref(false)
 
-const toggleDropdown = () => {
-  dropdownOpen.value = !dropdownOpen.value
+
+const toggleDropdownSort = () => {
+  dropdownOpenSort.value = !dropdownOpenSort.value
 }
 
+const toggleDropdownFilter = () => {
+  dropdownOpenFilter.value = !dropdownOpenFilter.value
+}
 const sortItems = (criteria) => {
   // Assuming your itemStore has a method for sorting
   itemStore.sortItems(criteria)
-  dropdownOpen.value = false
+  dropdownOpenSort.value = false
+}
+
+const filterItems = (criteria) => {
+  // Assuming your itemStore has a method for sorting
+  itemStore.filterItems(criteria)
+  dropdownOpenFilter.value = false
 }
 
 onMounted(()=>{
@@ -44,15 +55,28 @@ function searchItems () {
             <input type="text" placeholder="Search for items..." v-model="searchQuery" class="p-2 border rounded-l flex-1">
             <button @click="searchItems" class="search-button p-2 border rounded-r bg-blue-500 text-white ml-2">Search</button>
             <div class="relative ml-2">
-                <button @click="toggleDropdown" class="filter-button p-2 border rounded bg-blue-500 text-white">
-                    Filter
+                <button @click="toggleDropdownSort" class="filter-button p-2 border rounded bg-blue-500 text-white">
+                    Sort-by ☰
                 </button>
-                <div v-if="dropdownOpen" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
+                <div v-if="dropdownOpenSort" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
                         <li @click="sortItems('Jumlah Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terbanyak</li>
                         <li @click="sortItems('Jumlah Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah</li>
                         <li @click="sortItems('Nama Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (Z-A)</li>
                         <li @click="sortItems('Nama Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (A-Z)</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="relative ml-2">
+                <button @click="toggleDropdownFilter" class="filter-button p-2 border rounded bg-blue-500 text-white">
+                    Filter ☰
+                </button>
+                <div v-if="dropdownOpenFilter" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
+                    <ul>
+                        <li @click="filterItems('Jumlah 1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
+                        <li @click="filterItems('Jumlah 2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
+                        <li @click="filterItems('Jumlah 3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
+                        <li @click="filterItems('Jumlah >3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
                     </ul>
                 </div>
             </div>
