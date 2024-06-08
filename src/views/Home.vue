@@ -22,7 +22,7 @@ const sortItems = (criteria) => {
 }
 
 onMounted(()=>{
-    console.log("hit")
+
     itemStore.getAllItem()
 })
 

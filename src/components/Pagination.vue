@@ -1,9 +1,10 @@
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted, onBeforeMount } from 'vue';
 import { useItemStore } from '../stores/items';
+import { storeToRefs } from 'pinia';
 
 const itemStore = useItemStore();
-const currPage = ref(1);
+
 
 const updatePageNumber = (newVal) => {
     if (newVal <= itemStore.totalPages && newVal > 0) {
@@ -12,45 +13,28 @@ const updatePageNumber = (newVal) => {
     }
 };
 
-const totalPages = ref (itemStore.totalPages);
 
-let pages = ref ([])
 
-watch(totalPages, () =>{
-    
+const {totalPages} = storeToRefs(itemStore)
+
+
+const pages = computed(() => {
     console.log(totalPages, "ini total pages");
-    const maxPagesToShow = Math.min (5, totalPages);
+    const maxPagesToShow = Math.min (5, totalPages.value);
     const half = Math.floor(maxPagesToShow / 2);
     let start = Math.max(1, currPage.value - half);
-    let end = Math.min(totalPages, currPage.value + half);
+    let end = Math.min(totalPages.value, currPage.value + half);
 
     if (end - start < maxPagesToShow - 1) {
         start = Math.max(1, end - maxPagesToShow + 1);
     }
 
+    const pageNumbers = [];
     for (let i = start; i <= end; i++) {
-        pages.value.push(i);
+        pageNumbers.push(i);
     }
-})
-
-// const pages = computed(() => {
-//     const totalPages = itemStore.totalPages;
-//     console.log(totalPages, "ini total pages");
-//     const maxPagesToShow = Math.min (5, totalPages);
-//     const half = Math.floor(maxPagesToShow / 2);
-//     let start = Math.max(1, currPage.value - half);
-//     let end = Math.min(totalPages, currPage.value + half);
-
-//     if (end - start < maxPagesToShow - 1) {
-//         start = Math.max(1, end - maxPagesToShow + 1);
-//     }
-
-//     const pageNumbers = [];
-//     for (let i = start; i <= end; i++) {
-//         pageNumbers.push(i);
-//     }
-//     return pageNumbers;
-// });
+    return pageNumbers;
+});
 </script>
 
 <template>
@@ -94,3 +78,4 @@ watch(totalPages, () =>{
     color: #ffffff;
 }
 </style>
+

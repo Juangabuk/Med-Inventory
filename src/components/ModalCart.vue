@@ -5,13 +5,20 @@ import { backendUrl } from "../varConstants";
 
 const emit = defineEmits(["close"]);
 
-const itemStore = useItemStore()
+const itemStore = useItemStore();
 
-// onMounted(()=>{
-//     itemStore.getDetailItem(id)
-// })
+const cartItem = ref([])
 
-// const imageUrl = backendUrl + '/static/' + itemStore.detailItem.gambar;
+const cartData = JSON.parse(localStorage.getItem('items'))
+
+const imageUrl = backendUrl + '/static/items/itemImg-1.jpg'
+
+onMounted(()=>{
+  for (item in cartData){
+    cartItem.value.push(item)
+  }
+})
+
 
 </script>
 
@@ -33,12 +40,39 @@ const itemStore = useItemStore()
   
         <section class="modal-body">
           <div class="my-2">
+            <div class="flex flex-col">
+              <div class="flex flex-row justify-content-center align-content-center">
+                <div>
+                  <img :src="imageUrl" alt="test" style="width:100px;height:100px;" >
+                </div>
+                <div>
+                  Stetoskop
+                </div>
+                <div class="grow space-x-4">
+                  <button class="pagination-button"  >-</button>
+                  <span>1</span>
+                  <button class="pagination-button" >+</button>
+                </div>
+              </div>
+              <div class="flex flex-row justify-content-center align-content-center">
+                <div>
+                  <img :src="imageUrl" alt="test" style="width:100px;height:100px;" >
+                </div>
+                <div>
+                  Stetoskop
+                </div>
+                <div class="grow space-x-4">
+                  <button class="pagination-button"  >-</button>
+                  <span>1</span>
+                  <button class="pagination-button" >+</button>
+                </div>
+              </div>
+            </div>
           </div>
          </section>
   
         <footer class="modal-footer">
           <slot name="footer">
-
           </slot>
           <button
             type="button"
@@ -77,7 +111,7 @@ const itemStore = useItemStore()
   display: flex;
   flex-direction: column;
   max-height:55%;
-  max-width:25%;
+  min-width:25%;
   border-radius: 3%;
   overflow: hidden;
 }
