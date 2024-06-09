@@ -4,6 +4,7 @@ import { useItemStore } from '../stores/items';
 import { storeToRefs } from 'pinia';
 
 const itemStore = useItemStore();
+const currPage = ref(1)
 
 
 const updatePageNumber = (newVal) => {

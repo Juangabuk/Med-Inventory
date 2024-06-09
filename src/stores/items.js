@@ -124,5 +124,103 @@ export const useItemStore = defineStore('item', ()=>{
         }
     }
 
-    return {getAllItem, getDetailItem, postRentItems, items, detailItem, totalPages}
+    const handleAddItem = async (input)=>{
+        try {
+        
+            const { data } = await axios({
+                method:'post',
+                url: baseUrl +'/admin/add-item',
+                data:input,
+                headers:{
+                  'Content-Type': 'multipart/form-data'
+                },
+                withCredentials: true
+            })
+
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                // timer: 3000,
+                // timerProgressBar: true,
+            
+                icon: 'success',
+                title: 'Item Successfully Added'
+            })
+            
+            
+        } catch (err) {
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                icon: 'error',
+                title: 'Process Failed',
+                text: `${err.response.data.message}`
+              });
+        }
+    }
+
+    const deleteItem = async (id) =>{
+        try {
+            const { data } = await axios({
+                method:'delete',
+                url: baseUrl +'/admin/delete-item/'+id,
+                withCredentials: true
+            })
+
+        } catch (err) {
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                icon: 'error',
+                title: 'Process Failed',
+                text: `${err.response.data.message}`
+              });
+        }
+    }
+
+    const handleEditItem = async (input, id )=>{
+        try {
+        
+            const { data } = await axios({
+                method:'put',
+                url: baseUrl +'/admin/edit-item/'+id,
+                data:input,
+                headers:{
+                  'Content-Type': 'multipart/form-data'
+                },
+                withCredentials: true
+            })
+
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                // timer: 3000,
+                // timerProgressBar: true,
+            
+                icon: 'success',
+                title: 'Item Successfully Edited'
+            })
+            
+            
+        } catch (err) {
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                icon: 'error',
+                title: 'Process Failed',
+                text: `${err.response.data.message}`
+              });
+        }
+    }
+
+    return {
+        getAllItem, 
+        getDetailItem, 
+        postRentItems, 
+        handleAddItem, 
+        deleteItem, 
+        handleEditItem, 
+        items, 
+        detailItem, 
+        totalPages}
 })

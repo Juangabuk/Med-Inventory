@@ -1,21 +1,48 @@
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from '../components/Header.vue';
 import ItemCard from '../components/ItemCard.vue';
 import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
 import Pagination from '../components/Pagination.vue';
+import ModalAddItem from '../components/ModalAddItem.vue';
 
 onMounted(() => {
     itemStore.getAllItem()
 })
 
 
-
+const isModalVisibleAdd = ref(null)
 const userStore = useLoginStore()
 const itemStore = useItemStore()
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
+const editStatus = ref(false)
+function closeAddModal() {
+    editStatus.value = false
+    isModalVisibleAdd.value = false;
+}
+
+async function openAddModal( value =  null) {
+    if (value != null){
+        await itemStore.getDetailItem(value)
+        editStatus.value = true
+    }
+    isModalVisibleAdd.value = true;
+}
+
+
+let searchQuery = ref(null)
+function searchItems () {
+    itemStore.getAllItem(1, searchQuery.value)
+}
+
+const dropdownOpen = ref(false)
+
+const toggleDropdown = () => {
+  dropdownOpen.value = !dropdownOpen.value
+}
+
 
 
 
@@ -28,10 +55,10 @@ const userData = JSON.parse(localStorage.getItem('user_data'))
         <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
     </div>
     <div>
-        <Button @open-add-modal="openAddModal"></Button>
+        <!-- <Button ></Button> -->
         <div style="margin-left: 10%">
             <div class="add-item-button-container">
-                <button class="add-item-button" @click="openAddModal">Add Item</button>
+                <button class="add-item-button" @click="openAddModal()" >Add Item</button>
             </div>
             <div class="search-bar mt-3 flex items-center w-1/2">
                 <input type="text" placeholder="Search for items..." v-model="searchQuery"
@@ -57,22 +84,11 @@ const userData = JSON.parse(localStorage.getItem('user_data'))
                 </div>
             </div>
             <div class="product-grid">
-                <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item" />
-                <!-- <div v-for="item in itemInventory" :key="item.id" class="product-card">
-                    <img :src="item.image" :alt="item.name" class="product-image">
-                    <div class="product-info">
-                        <h3>{{ item.itemName }}</h3>
-                        <p>Kategori: {{ item.kategori }}</p>
-                        <p>Stok: {{ item.stok }}</p>
-                        <button class="add">Add</button>
-                        <button class="edit">Edit</button>
-                        <button class="delete">Delete</button>
-                    </div>
-                </div> -->
+                <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item" @open="openAddModal"/>
             </div>
         </div>
         <Pagination/>
-        <Modal :visible="isModalVisible" @close="closeAddModal" @add-item="addItem"></Modal>
+        <ModalAddItem v-if="isModalVisibleAdd" @close="closeAddModal" :editStatus="editStatus"/>
     </div>
 </template>
 
