@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, ref, onMounted, onBeforeMount } from "vue"
+import { defineProps, defineEmits, ref } from "vue";
 import { useItemStore } from "../stores/items";
 import { backendUrl } from "../varConstants";
 
@@ -7,89 +7,81 @@ const emit = defineEmits(["close"]);
 
 const itemStore = useItemStore();
 
-const cartItem = ref([])
+const cartItem = ref([]);
 
-const cartData = JSON.parse(localStorage.getItem('items'))
+const cartData = JSON.parse(localStorage.getItem('items'));
 
-const imageUrl = backendUrl + '/static/items/itemImg-1.jpg'
+const imageUrl = backendUrl + '/static/items/itemImg-1.jpg';
 
-onMounted(()=>{
-  for (item in cartData){
-    cartItem.value.push(item)
+const today = new Date().toISOString().split('T')[0];
+
+const removeItem = (id) => {
+  const index = cartData.findIndex(item => item.id === id);
+  if (index !== -1) {
+    cartData.splice(index, 1);
+    localStorage.setItem('items', JSON.stringify(cartData));
   }
-})
-
-
+};
 </script>
 
 <template>
-    <div class="modal-backdrop">
-      <div class="modal">
-        <header class="modal-header">
-          <slot name="header">
-            <h2 class="text-lg font-semibold">Item Cart</h2>
-          </slot>
-          <button
-            type="button"
-            class="btn-close"
-            @click.stop="emit('close')"
-          >
-            x
-          </button>
-        </header>
-  
-        <section class="modal-body">
-          <div class="my-2">
-            <div class="flex flex-col">
-              <div class="flex flex-row justify-content-center align-content-center">
-                <div>
-                  <img :src="imageUrl" alt="test" style="width:100px;height:100px;" >
-                </div>
-                <div>
-                  Stetoskop
-                </div>
-                <div class="grow space-x-4">
-                  <button class="pagination-button"  >-</button>
-                  <span>1</span>
-                  <button class="pagination-button" >+</button>
-                </div>
+  <div class="modal-backdrop">
+    <div class="modal">
+      <header class="modal-header">
+        <slot name="header">
+          <h2 class="text-lg font-semibold">Item Cart</h2>
+        </slot>
+        <button type="button" class="btn-close" @click.stop="emit('close')">
+          x
+        </button>
+      </header>
+
+      <section class="modal-body">
+        <div class="my-2">
+          <div class="table-header">
+            <div class="header-item">Nama Alat</div>
+            <div class="header-item">Jumlah</div>
+            <div class="header-item">Tanggal Pengembalian</div>
+            <div class="header-item">Action</div>
+          </div>
+          <div class="flex flex-col">
+            <div class="table-row" v-for="item in cartData" :key="item.id">
+              <div class="cell">
+                <img :src="imageUrl" alt="test" class="item-img">
+                Stetoskop
               </div>
-              <div class="flex flex-row justify-content-center align-content-center">
-                <div>
-                  <img :src="imageUrl" alt="test" style="width:100px;height:100px;" >
-                </div>
-                <div>
-                  Stetoskop
-                </div>
-                <div class="grow space-x-4">
-                  <button class="pagination-button"  >-</button>
-                  <span>1</span>
-                  <button class="pagination-button" >+</button>
-                </div>
+              <div class="cell">
+                <button class="pagination-button">-</button>
+                <span>1</span>
+                <button class="pagination-button">+</button>
               </div>
+              <div class="cell">
+                <input type="date" class="date-input" :min="today" placeholder="dd/mm/yyyy" />
+              </div>
+              <div class="cell">
+                <button class="trash-button" @click="removeItem(item.id)">
+                  🗑️
+                </button>
+              </div>
+
             </div>
           </div>
-         </section>
-  
-        <footer class="modal-footer">
-          <slot name="footer">
-          </slot>
-          <button
-            type="button"
-            class="btn-cancel"
-            @click.stop="emit('close')"
-          >
-            Cancel
-          </button>
-          <button
-          type="button"
-          class="btn-order">
-            Order
-          </button>
-        </footer>
-      </div>
+        </div>
+      </section>
+
+      <footer class="modal-footer">
+        <slot name="footer">
+        </slot>
+        <button type="button" class="btn-cancel" @click.stop="emit('close')">
+          Cancel
+        </button>
+        <button type="button" class="btn-order">
+          Order
+        </button>
+      </footer>
     </div>
-  </template>
+  </div>
+</template>
 
 <style scoped>
 .modal-backdrop {
@@ -102,6 +94,7 @@ onMounted(()=>{
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 9999;
 }
 
 .modal {
@@ -110,8 +103,10 @@ onMounted(()=>{
   overflow-x: auto;
   display: flex;
   flex-direction: column;
-  max-height:55%;
-  min-width:25%;
+  max-height: 80%;
+  /* Increased from 55% */
+  min-width: 40%;
+  /* Increased from 25% */
   border-radius: 3%;
   overflow: hidden;
 }
@@ -167,14 +162,75 @@ onMounted(()=>{
   border-radius: 2%;
 }
 
-img{
-  width:20rem;
+img {
+  width: 20rem;
   object-fit: cover;
 }
 
-.div-desc{
+.date-input {
+  width: 150px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.div-desc {
   word-wrap: break-word;
 }
 
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
+.header-item {
+  flex: 1;
+  text-align: center;
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cell {
+  flex: 1;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item-img {
+  width: 50px;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.pagination-button {
+  background: #0d4dbc;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.pagination-button:disabled {
+  background: grey;
+  cursor: not-allowed;
+}
+
+.trash-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 18px;
+}
 </style>

@@ -52,8 +52,8 @@ const localRole = ref(localStorage.getItem('role'))
             </div>
             <img class="profile-pic" src="https://picsum.photos/200/300?grayscale" alt="Profile Picture">
         </div>
-        <ModalCart v-if="isModalCartVisible" @close="closeModalCart"/>
     </div>
+    <ModalCart v-if="isModalCartVisible" @close="closeModalCart"/>
 </template>
 
 <!-- <script>

@@ -106,7 +106,6 @@ function editItem(id){
     </div>
 </template>
 
-
 <style scoped>
 .product-grid {
     display: flex;
@@ -115,8 +114,9 @@ function editItem(id){
 }
 
 .product-image {
-    width: 100%;
-    height: auto;
+    width: 200px; /* Adjust the width as needed */
+    height: 200px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensures the image is centered and covers the area */
 }
 
 .detail-button,
@@ -134,7 +134,7 @@ function editItem(id){
     background-color: #0056b3;
 }
 
-.edit-button{
+.edit-button {
     margin-top: 10px;
     padding: 5px 10px;
     border: none;
@@ -147,7 +147,7 @@ function editItem(id){
     background-color: #f08812;
 }
 
-.delete-button{
+.delete-button {
     margin-top: 10px;
     padding: 5px 10px;
     border: none;
@@ -156,7 +156,7 @@ function editItem(id){
     cursor: pointer;
 }
 
-.delete-button:hover{
+.delete-button:hover {
     background-color: #f01212;
 }
 </style>
