@@ -1,27 +1,99 @@
 <script setup>
-import { defineProps, defineEmits, ref } from "vue";
+import { defineProps, defineEmits, ref, computed, onMounted } from "vue";
 import { useItemStore } from "../stores/items";
+import {useRentStore} from "../stores/Rent"
 import { backendUrl } from "../varConstants";
+import Swal from "sweetalert2";
+import { useRouter } from "vue-router";
 
 const emit = defineEmits(["close"]);
 
 const itemStore = useItemStore();
+const rentStore = useRentStore();
+const router = useRouter()
 
-const cartItem = ref([]);
+const closeModal = () =>{
+  localStorage.setItem('items', JSON.stringify(cartData.value))
+  emit('close')
+}
 
-const cartData = JSON.parse(localStorage.getItem('items'));
-
-const imageUrl = backendUrl + '/static/items/itemImg-1.jpg';
 
 const today = new Date().toISOString().split('T')[0];
 
+const cartData = ref(null)
+
+onMounted(async()=>{
+  const items = JSON.parse(localStorage.getItem('items'));
+
+  let carts = []
+  for (let item of items){
+    await itemStore.getDetailItem(item.itemId)
+      const userData = JSON.parse(localStorage.getItem('user_data'))
+      const currItem = {
+        imageUrl: backendUrl+'/static/'+itemStore.detailItem.gambar,
+        jumlah: item.jumlah ? item.jumlah : 1,
+        name: itemStore.detailItem.namaBarang,
+        tanggalKembali: today,
+        itemId: item.itemId,
+        userId: userData.id,
+        tanggalPinjam: new Date().toISOString().split('T')[0],
+        id : item.itemId
+      }
+      carts.push(currItem)
+  }
+  cartData.value = carts
+})
+
 const removeItem = (id) => {
-  const index = cartData.findIndex(item => item.id === id);
+  const index = cartData.value.findIndex(item => item.id === id);
   if (index !== -1) {
-    cartData.splice(index, 1);
-    localStorage.setItem('items', JSON.stringify(cartData));
+    cartData.value.splice(index, 1);
   }
 };
+
+const changeItemValue = (id, newVal) => {
+  for (let item of cartData.value){
+    if (item.id == id){
+      item.jumlah = newVal
+    }
+  }
+}
+
+const submitCart = () =>{
+  Swal.fire({
+                title: "Are you sure?",
+                text: "Make sure your order is correct",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Order it!"
+            }).then(async(result) => {
+                if (result.isConfirmed) {
+                  await rentStore.postRentItems(cartData.value) 
+                } 
+              })
+              .then(()=>{
+                  Swal.fire({
+                    title: "Success!",
+                    text: "Rent Items Successful!",
+                    icon: "success"
+                  });
+                  localStorage.removeItem('items')
+                closeModal()
+                router.go()
+              })
+              .catch(err=>{
+                Swal.fire({
+                  toast: true,
+                  showConfirmButton: true,
+                  icon: 'error',
+                  title: 'Permission denied',
+                  text: `${err.response.data.message}`
+                });
+              })
+  
+}
 </script>
 
 <template>
@@ -31,7 +103,7 @@ const removeItem = (id) => {
         <slot name="header">
           <h2 class="text-lg font-semibold">Item Cart</h2>
         </slot>
-        <button type="button" class="btn-close" @click.stop="emit('close')">
+        <button type="button" class="btn-close" @click.stop="closeModal">
           x
         </button>
       </header>
@@ -45,21 +117,21 @@ const removeItem = (id) => {
             <div class="header-item">Action</div>
           </div>
           <div class="flex flex-col">
-            <div class="table-row" v-for="item in cartData" :key="item.id">
+            <div class="table-row" v-for="(item,index) in cartData" :key="index">
               <div class="cell">
-                <img :src="imageUrl" alt="test" class="item-img">
-                Stetoskop
+                <img :src="item.imageUrl" :alt="item.name" class="item-img">
+                {{ item.name }}
               </div>
               <div class="cell">
-                <button class="pagination-button">-</button>
-                <span>1</span>
-                <button class="pagination-button">+</button>
+                <button class="pagination-button" @click="changeItemValue(item.id, item.jumlah-1)" :disabled="item.jumlah == 1">-</button>
+                <span>{{ item.jumlah }}</span>
+                <button class="pagination-button" @click="changeItemValue(item.id, item.jumlah+1)">+</button>
               </div>
               <div class="cell">
-                <input type="date" class="date-input" :min="today" placeholder="dd/mm/yyyy" />
+                <input type="date" class="date-input" :min="today" v-model="item.tanggalKembali" placeholder="dd/mm/yyyy" />
               </div>
               <div class="cell">
-                <button class="trash-button" @click="removeItem(item.id)">
+                <button class="trash-button" @click="removeItem(item.itemId)">
                   🗑️
                 </button>
               </div>
@@ -72,10 +144,10 @@ const removeItem = (id) => {
       <footer class="modal-footer">
         <slot name="footer">
         </slot>
-        <button type="button" class="btn-cancel" @click.stop="emit('close')">
+        <button type="button" class="btn-cancel" @click.stop="closeModal">
           Cancel
         </button>
-        <button type="button" class="btn-order">
+        <button type="button" class="btn-order" @click.prevent="submitCart">
           Order
         </button>
       </footer>
@@ -94,7 +166,7 @@ const removeItem = (id) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 2;
 }
 
 .modal {
