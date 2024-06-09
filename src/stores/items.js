@@ -16,7 +16,7 @@ export const useItemStore = defineStore('item', ()=>{
     const totalPages = ref(1)
     const numberItemPerPage = 5
 
-    const getAllItem = async(page = 1, search = null, sort = null )=>{
+    const getAllItem = async(page = 1, search = null, sort = null, filter=null )=>{
         let option = ''
         if (search != null) {
             option += `&search=${search}`
@@ -42,16 +42,28 @@ export const useItemStore = defineStore('item', ()=>{
             }
         }
 
-        try{
-            const {data} = await axios({
-                method:'get',
-                url: `${baseUrl}/user/items?sort=id&page[size]=5&page[number]=${page}`+ option
-            })
+        if(filter != null){
+            option += `&filter[jumlah]=${filter}`
+        }
 
-            items.value = data.data
-            totalItem.value = data.length
-            totalPages.value= Math.ceil(data.length/ numberItemPerPage)
-            console.log(data.length)
+        try{
+            let result
+            if (localStorage.getItem('role') == 'User'){
+                result  = await axios({
+                    method:'get',
+                    url: `${baseUrl}/user/items?page[size]=5&page[number]=${page}`+ option
+                })
+            } else{
+                result  = await axios({
+                    method:'get',
+                    url: `${baseUrl}/admin/items?page[size]=5&page[number]=${page}`+ option
+                })
+            }
+
+            items.value = result.data.data
+            totalItem.value = result.data.length
+            totalPages.value= Math.ceil(result.data.length/ numberItemPerPage)
+            console.log(result.data.length)
             console.log("total",totalPages)
   
         }
@@ -92,6 +104,7 @@ export const useItemStore = defineStore('item', ()=>{
               });
         }
     }
+
 
     const postRentItems = async ()=>{
         try {

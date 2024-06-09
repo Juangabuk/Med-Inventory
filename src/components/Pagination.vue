@@ -5,11 +5,12 @@ import { storeToRefs } from 'pinia';
 
 const itemStore = useItemStore();
 const currPage = ref(1)
+const prop = defineProps(['search','sort','filter'])
 
 
 const updatePageNumber = (newVal) => {
     if (newVal <= itemStore.totalPages && newVal > 0) {
-        itemStore.getAllItem(newVal);
+        itemStore.getAllItem(newVal, prop.search, prop.sort, prop.filter);
         currPage.value = newVal;
     }
 };
