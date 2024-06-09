@@ -1,5 +1,5 @@
 <script setup>
-import { useRouter } from 'vue-router';
+import {  useRouter } from 'vue-router';
 import { backendUrl } from '../varConstants';
 import { ref } from 'vue';
 import ModalDetail from './ModalDetail.vue';
@@ -7,6 +7,8 @@ import { useItemStore } from '../stores/items';
 import Swal from 'sweetalert2';
 
 const item = defineProps(['item'])
+const emit = defineEmits(['open'])
+const router = useRouter()
 
 const itemStore = useItemStore();
 const imageUrl = ref(backendUrl + '/static/' + item.item.gambar)
@@ -59,20 +61,47 @@ function addToCart(id){
                 })
     }
 }
+
+async function deleteItem(id){
+    Swal.fire({
+                title: "Are you sure?",
+                text: "You will delete this item",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    itemStore.deleteItem(id)   
+                  Swal.fire({
+                    title: "Success!",
+                    text: "Your item has been deleted",
+                    icon: "success"
+                  });
+                  router.go()
+                }
+              });
+}
+
+function editItem(id){
+    emit('open', id)
+}
+
 </script>
 
 <template>
-    <div class="product-card">
-        <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
-        <div class="product-info">
-            <h3>{{ item.item.namaBarang }}</h3>
-            <p>Kategori: {{ item.item.kategori }}</p>
-            <p>Stok: {{ item.item.jumlah }}</p>
-            <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
-            <button v-show="$route.name =='Home'" class="add-to-cart-button" @click="addToCart(item.item.id)">Add to Cart</button>
-            <button class="edit-button" v-show="$route.name == 'ProductManagement'">Edit Item</button>
-            <button class="delete-button" v-show="$route.name == 'ProductManagement'">Delete Item</button>
-        </div>
+    <div class="product-card" >
+            <img :src="imageUrl" :alt="item.item.namaBarang" class="product-image">
+            <div class="product-info">
+                <h3>{{ item.item.namaBarang }}</h3>
+                <p>Kategori: {{ item.item.kategori }}</p>
+                <p>Stok: {{ item.item.jumlah }}</p>
+                <button class="detail-button" @click="showModal(item.item.id)">Detail</button>
+                <button v-show="$route.name =='Home'" class="add-to-cart-button" @click="addToCart(item.item.id)">Add to Cart</button>
+                <button class="edit-button" v-show="$route.name == 'ProductManagement'" @click="editItem(item.item.id)">Edit Item</button>
+                <button class="delete-button" v-show="$route.name =='ProductManagement'" @click="deleteItem(item.item.id)">Delete Item</button>
+            </div>
         <ModalDetail v-if="isModalVisible" @close="closeModal" />
     </div>
 </template>
