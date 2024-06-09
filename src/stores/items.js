@@ -138,15 +138,12 @@ export const useItemStore = defineStore('item', ()=>{
             })
 
             Swal.fire({
-                toast: true,
-                showConfirmButton: true,
-                // timer: 3000,
-                // timerProgressBar: true,
-            
-                icon: 'success',
-                title: 'Item Successfully Added'
+                title: "Success!",
+                text: "Item has been added",
+                icon: "success",
+                timer: 2000
             })
-            
+            return data
             
         } catch (err) {
             Swal.fire({

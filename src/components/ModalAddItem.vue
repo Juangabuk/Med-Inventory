@@ -40,7 +40,7 @@ function onFileChange(event){
       form.gambar= event.target.files[0]
   }
 
-function submitAddForm(formData){
+async function submitAddForm(formData){
     const fd = new FormData()
 
     fd.append('namaBarang',formData.namaBarang)
@@ -51,13 +51,18 @@ function submitAddForm(formData){
     fd.append('gambar',form.gambar)
 
     if (editStatus.editStatus){
-      itemStore.handleEditItem(fd, itemStore.detailItem.id)
+      await itemStore.handleEditItem(fd, itemStore.detailItem.id)
+      .then((data)=>{
+        router.go()
+      })
     } else{
-      itemStore.handleAddItem(fd)
+      await itemStore.handleAddItem(fd)
+      .then((data)=>{
+        router.go()
+      })
     }
     
     emit('close')
-    router.go()
 }
 
 // const imageUrl = backendUrl + '/static/' + itemStore.detailItem.gambar;
@@ -102,12 +107,12 @@ function submitAddForm(formData){
               </select>
             </div>
             <div class="form-group">
-              <label for="itemName">Location</label>
+              <label for="itemName">Description</label>
               <textarea class="form-control" id="itemDescription" v-model="form.deskripsi" rows="3" placeholder="Enter item description" required></textarea>
             </div>
             <div class="form-group">
               <label for="itemPhoto">Upload Photo</label>
-              <input v-on:change="onFileChange" type="file" class="form-control-file" >
+              <input v-on:change="onFileChange" type="file" class="form-control-file" :required="editStatus.editStatus == true ? null: true">
             </div>
             <button type="submit" class="btn btn-primary">Save Item</button>
             </form>
