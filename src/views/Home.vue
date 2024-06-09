@@ -8,9 +8,12 @@ import Pagination from '../components/Pagination.vue';
 
 const userStore = useLoginStore()
 const itemStore = useItemStore()
-
+const searchQuery = ref(null)
+const sort = ref(null)
+const filter = ref(null)
 const dropdownOpenSort = ref(false)
 const dropdownOpenFilter = ref(false)
+
 
 
 const toggleDropdownSort = () => {
@@ -22,13 +25,15 @@ const toggleDropdownFilter = () => {
 }
 const sortItems = (criteria) => {
   // Assuming your itemStore has a method for sorting
-  itemStore.sortItems(criteria)
+  sort.value = criteria
+  itemStore.getAllItem(1,searchQuery.value,criteria)
   dropdownOpenSort.value = false
 }
 
 const filterItems = (criteria) => {
-  // Assuming your itemStore has a method for sorting
-  itemStore.filterItems(criteria)
+  // Assuming your itemStore has a method for filtering
+  filter.value = criteria
+  itemStore.getAllItem(1, searchQuery.value,null ,criteria)
   dropdownOpenFilter.value = false
 }
 
@@ -38,9 +43,9 @@ onMounted(()=>{
 })
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
-let searchQuery = ref(null)
+
 function searchItems () {
-    itemStore.getAllItem(1, searchQuery.value)
+    itemStore.getAllItem(1, searchQuery.value, sort.value, filter.value)
 }
 
 </script>
@@ -60,6 +65,7 @@ function searchItems () {
                 </button>
                 <div v-if="dropdownOpenSort" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
+                        <li @click="sortItems(null)" class="p-2 hover:bg-gray-200 cursor-pointer">Default</li>
                         <li @click="sortItems('Jumlah Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terbanyak</li>
                         <li @click="sortItems('Jumlah Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah</li>
                         <li @click="sortItems('Nama Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (Z-A)</li>
@@ -73,18 +79,19 @@ function searchItems () {
                 </button>
                 <div v-if="dropdownOpenFilter" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
-                        <li @click="filterItems('Jumlah 1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
-                        <li @click="filterItems('Jumlah 2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
-                        <li @click="filterItems('Jumlah 3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
-                        <li @click="filterItems('Jumlah >3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
+                        <li @click="filterItems(null)" class="p-2 hover:bg-gray-200 cursor-pointer">All </li>
+                        <li @click="filterItems('1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
+                        <li @click="filterItems('2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
+                        <li @click="filterItems('3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
+                        <li @click="filterItems('>3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="product-grid">
-            <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item"/>
+            <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item" :search="searchQuery" />
         </div>
-        <Pagination />
+        <Pagination :search="searchQuery" :sort="sort" :filter="filter"/>
     </div>
 </template>
 

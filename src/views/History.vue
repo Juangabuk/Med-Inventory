@@ -1,15 +1,25 @@
 <script setup>
-import { onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { useRentStore } from '../stores/Rent';
 import Swal from 'sweetalert2';
 
-
-
 const rent = useRentStore();
 
-onMounted(() => {
-  rent.getAllHistory();
+const users = ref(null)
+const selectedUser = ref(null)
+
+onMounted(async() => {
+  await rent.getAllHistory();
+  const role = localStorage.getItem('role');
+  if (role == 'Admin'){
+    await rent.getAllUsers()
+    users.value = rent.users
+  }
 });
+
+const itemData = computed(()=>{
+  return rent.items
+})
 
 function formatDate(date) {
   const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
@@ -43,24 +53,35 @@ function returnItem(itemId) {
   console.log('Returning item with ID:', itemId);
 }
 
-const role = localStorage.role
-const users = ["User1", "User2", "User3"]; // Replace with actual user data
+const getHistoryByUser = async (event)=>{
+  if (event.target.value == 'All'){
+    await rent.getAllHistory(null)
+  } else{
+    await rent.getAllHistory(event.target.value)
+  }
+  
+}
+
+const role = localStorage.getItem('role')
+console.log(users)
+
 </script>
 
 <template>
   <div v-if="role === 'Admin'" class="history-table">
     <h1>History</h1>
     <div class="search-container">
-      <input type="text" placeholder="Search" v-model="searchQuery" />
+      <!-- <input type="text" placeholder="Search" v-model="searchQuery" />
       <button @click="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-      </button>
+      </button> -->
       <label for="user-select" class="user-select-label">Select User: </label>
-      <select id="user-select" v-model="selectedUser">
-        <option v-for="user in users" :key="user" :value="user">{{ user }}</option>
+      <select id="user-select" @change="getHistoryByUser">
+        <option :value="null">All</option>
+        <option v-for="(user,index) in users" :key="index" :value="user.id">{{ user.username }}</option>
       </select>
     </div>
     <table>
@@ -76,7 +97,7 @@ const users = ["User1", "User2", "User3"]; // Replace with actual user data
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in rent.items" :key="item.id">
+        <tr v-for="(item, index) in itemData" :key="item.id">
           <td>{{ index + 1 }}</td>
           <td>{{ item.Item.namaBarang }}</td>
           <td>{{ item.jumlah }}</td>
@@ -95,13 +116,13 @@ const users = ["User1", "User2", "User3"]; // Replace with actual user data
   <div v-else class="history-table">
     <h1>History User</h1>
     <div class="search-container">
-      <input type="text" placeholder="Search" v-model="searchQuery" />
+      <!-- <input type="text" placeholder="Search" v-model="searchQuery" />
       <button @click="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
-      </button>
+      </button> -->
     </div>
     <table>
       <thead>
@@ -116,7 +137,7 @@ const users = ["User1", "User2", "User3"]; // Replace with actual user data
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in rent.items" :key="item.id">
+        <tr v-for="(item, index) in itemData" :key="item.id">
           <td>{{ index + 1 }}</td>
           <td>{{ item.Item.namaBarang }}</td>
           <td>{{ item.jumlah }}</td>
