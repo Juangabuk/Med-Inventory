@@ -145,7 +145,7 @@ const submitCart = () =>{
         <button type="button" class="btn-cancel" @click.stop="closeModal">
           Cancel
         </button>
-        <button type="button" class="btn-order" @click.prevent="submitCart">
+        <button type="button" class="btn-order mt-10px" @click.prevent="submitCart">
           Order
         </button>
       </footer>
