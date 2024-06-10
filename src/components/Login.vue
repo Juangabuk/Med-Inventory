@@ -1,7 +1,7 @@
 <script setup>
 import { useLoginStore } from '../stores/login';
 import { ref } from 'vue'
-// import {logomediinv} from '../assets/logomediinv.png'
+
 
 const handleLogin = useLoginStore()
 
@@ -22,7 +22,7 @@ const formLogin = ref({
             <p class="text-gray-600 my-4">
                 Inventory Management System
             </p>
-            <img src="../assets/logomediinv.webp" alt="Medi-Inventory Logo" class="self-center my-4">
+            <img src="../assets/logomediinv.webp" alt="Medi-Inventory Logo" class="self-center my-4 logo-img">
             <p class="text-gray-600 mt-12">
                 One Application that keep tracks of your organization assets
             </p>
@@ -101,5 +101,10 @@ input:focus {
     /* Tailwind's blue-700 color */
     box-shadow: 0 0 5px rgba(76, 81, 191, 0.5);
     /* Slight blue shadow */
+}
+
+.logo-img {
+  width: 250px; /* Adjust the width as needed */
+  height: auto;
 }
 </style>
