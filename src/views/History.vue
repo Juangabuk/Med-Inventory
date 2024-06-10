@@ -3,23 +3,30 @@ import { computed, onMounted, ref } from 'vue';
 import { useRentStore } from '../stores/Rent';
 import Swal from 'sweetalert2';
 import { routerKey, useRouter } from 'vue-router';
+import SkeletonLoader from '../components/SkeletonLoader.vue';
+
 
 const rent = useRentStore();
 
 const users = ref(null)
 const selectedUser = ref(null)
 const router = useRouter()
+const loading = ref(true) // New loading state
 
-onMounted(async() => {
+
+onMounted(async () => {
   await rent.getAllHistory();
   const role = localStorage.getItem('role');
-  if (role == 'Admin'){
+  if (role == 'Admin') {
     await rent.getAllUsers()
     users.value = rent.users
   }
+  await itemStore.getAllItem()
+  loading.value = false // Set loading to false after items are fetched
 });
 
-const itemData = computed(()=>{
+
+const itemData = computed(() => {
   return rent.items
 })
 
@@ -34,16 +41,16 @@ function canReturn(status) {
 
 function returnItem(itemId) {
   Swal.fire({
-  title: "Apakah Anda Ingin Mengembalikan Barang?",
-  text: "Pastikan Anda Telah Selesai Menggunakannya!",
-  icon: "warning",
-  showCancelButton: true,
-  confirmButtonColor: "#3085d6",
-  cancelButtonColor: "#d33",
-  cancelButtonText: "Tunggu Dulu!",
-  confirmButtonText: "Ya Kembalikan!"
-}).then((result) => {
-  if (result.isConfirmed) {
+    title: "Apakah Anda Ingin Mengembalikan Barang?",
+    text: "Pastikan Anda Telah Selesai Menggunakannya!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    cancelButtonText: "Tunggu Dulu!",
+    confirmButtonText: "Ya Kembalikan!"
+  }).then((result) => {
+    if (result.isConfirmed) {
       rent.patchReturnItem(itemId)
       Swal.fire({
         title: "Sukses Mengembalikan",
@@ -52,25 +59,25 @@ function returnItem(itemId) {
       });
       router.go()
     }
-    })  
-    .catch(err=>{
+  })
+    .catch(err => {
       Swal.fire({
-          toast: true,
-          showConfirmButton: true,
-          icon: 'error',
-          title: 'Permission denied',
-          text: `${err.response.data.message}`
-        });
+        toast: true,
+        showConfirmButton: true,
+        icon: 'error',
+        title: 'Permission denied',
+        text: `${err.response.data.message}`
+      });
     })
 }
 
-const getHistoryByUser = async (event)=>{
-  if (event.target.value == 'All'){
+const getHistoryByUser = async (event) => {
+  if (event.target.value == 'All') {
     await rent.getAllHistory(null)
-  } else{
+  } else {
     await rent.getAllHistory(event.target.value)
   }
-  
+
 }
 
 const role = localStorage.getItem('role')
@@ -92,7 +99,7 @@ const role = localStorage.getItem('role')
       <label for="user-select" class="user-select-label">Select User: </label>
       <select id="user-select" @change="getHistoryByUser">
         <option :value="null">All</option>
-        <option v-for="(user,index) in users" :key="index" :value="user.id">{{ user.username }}</option>
+        <option v-for="(user, index) in users" :key="index" :value="user.id">{{ user.username }}</option>
       </select>
     </div>
     <table>
@@ -162,6 +169,7 @@ const role = localStorage.getItem('role')
           </td>
         </tr>
       </tbody>
+      <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
     </table>
   </div>
 </template>
@@ -171,16 +179,18 @@ const role = localStorage.getItem('role')
   font-family: Arial, sans-serif;
   margin: 20px;
 }
+
 h1 {
   text-align: left;
   font-size: xx-large;
 }
-.return-button{
+
+.return-button {
   background-color: #569de8;
   color: #ddd;
 }
 
-.return-button:disabled{
+.return-button:disabled {
   background-color: red;
   color: #ddd;
   cursor: not-allowed;
@@ -192,37 +202,47 @@ h1 {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
 input[type="text"] {
-  width: 200px; /* Adjust the width as needed */
+  width: 200px;
+  /* Adjust the width as needed */
   padding: 5px;
   font-size: 14px;
 }
+
 button {
   background: none;
   border: none;
   cursor: pointer;
   padding: 5px;
 }
+
 button svg {
   width: 20px;
   height: 20px;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
 }
+
 thead {
   background-color: #f2f2f2;
 }
-th, td {
+
+th,
+td {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
 }
+
 .status-link {
   color: blue;
   text-decoration: none;
 }
+
 .status-link:hover {
   text-decoration: underline;
 }

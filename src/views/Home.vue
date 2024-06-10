@@ -5,71 +5,74 @@ import ItemCard from '../components/ItemCard.vue';
 import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
 import Pagination from '../components/Pagination.vue';
+import SkeletonLoader from '../components/SkeletonLoader.vue';
 
 const userStore = useLoginStore()
 const itemStore = useItemStore()
-const searchQuery = ref(null)
-const sort = ref(null)
-const filter = ref(null)
+
 const dropdownOpenSort = ref(false)
 const dropdownOpenFilter = ref(false)
-
-
+const loading = ref(true) // New loading state
 
 const toggleDropdownSort = () => {
-  dropdownOpenSort.value = !dropdownOpenSort.value
+    dropdownOpenSort.value = !dropdownOpenSort.value
 }
 
 const toggleDropdownFilter = () => {
-  dropdownOpenFilter.value = !dropdownOpenFilter.value
+    dropdownOpenFilter.value = !dropdownOpenFilter.value
 }
+
 const sortItems = (criteria) => {
-  // Assuming your itemStore has a method for sorting
-  sort.value = criteria
-  itemStore.getAllItem(1,searchQuery.value,criteria)
-  dropdownOpenSort.value = false
+    itemStore.sortItems(criteria)
+    dropdownOpenSort.value = false
 }
 
 const filterItems = (criteria) => {
-  // Assuming your itemStore has a method for filtering
-  filter.value = criteria
-  itemStore.getAllItem(1, searchQuery.value,null ,criteria)
-  dropdownOpenFilter.value = false
+    itemStore.filterItems(criteria)
+    dropdownOpenFilter.value = false
 }
 
-onMounted(()=>{
-
-    itemStore.getAllItem()
+onMounted(async () => {
+    await itemStore.getAllItem()
+    loading.value = false // Set loading to false after items are fetched
 })
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
-
-function searchItems () {
-    itemStore.getAllItem(1, searchQuery.value, sort.value, filter.value)
+let searchQuery = ref(null)
+function searchItems() {
+    loading.value = true
+    itemStore.getAllItem(1, searchQuery.value).finally(() => {
+        loading.value = false
+    })
 }
-
 </script>
 
 <template>
+    <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
     <!-- <Header></Header> -->
     <div style="margin-left: 2%">
         <div class="welcome mt-5 text-left text-3xl">
             <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
         </div>
         <div class="search-bar mt-3 flex items-center w-1/2">
-            <input type="text" placeholder="Search for items..." v-model="searchQuery" class="p-2 border rounded-l flex-1">
-            <button @click="searchItems" class="search-button p-2 border rounded-r bg-blue-500 text-white ml-2">Search</button>
+            <input type="text" placeholder="Search for items..." v-model="searchQuery"
+                class="p-2 border rounded-l flex-1">
+            <button @click="searchItems"
+                class="search-button p-2 border rounded-r bg-blue-500 text-white ml-2">Search</button>
             <div class="relative ml-2">
                 <button @click="toggleDropdownSort" class="filter-button p-2 border rounded bg-blue-500 text-white">
                     Sort-by ☰
                 </button>
                 <div v-if="dropdownOpenSort" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
-                        <li @click="sortItems(null)" class="p-2 hover:bg-gray-200 cursor-pointer">Default</li>
-                        <li @click="sortItems('Jumlah Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terbanyak</li>
-                        <li @click="sortItems('Jumlah Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah</li>
-                        <li @click="sortItems('Nama Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (Z-A)</li>
-                        <li @click="sortItems('Nama Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk (A-Z)</li>
+                        <li @click="sortItems('Jumlah Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock
+                            terbanyak</li>
+                        <li @click="sortItems('Jumlah Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock terendah
+                        </li>
+                        <li @click="sortItems('Nama Desc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk
+                            (Z-A)</li>
+                        <li @click="sortItems('Nama Asc')" class="p-2 hover:bg-gray-200 cursor-pointer">Nama Produk
+                            (A-Z)</li>
                     </ul>
                 </div>
             </div>
@@ -77,23 +80,25 @@ function searchItems () {
                 <button @click="toggleDropdownFilter" class="filter-button p-2 border rounded bg-blue-500 text-white">
                     Filter ☰
                 </button>
-                <div v-if="dropdownOpenFilter" class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
+                <div v-if="dropdownOpenFilter"
+                    class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
-                        <li @click="filterItems(null)" class="p-2 hover:bg-gray-200 cursor-pointer">All </li>
-                        <li @click="filterItems('1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
-                        <li @click="filterItems('2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
-                        <li @click="filterItems('3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
-                        <li @click="filterItems('>3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
+                        <li @click="filterItems('Jumlah 1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
+                        <li @click="filterItems('Jumlah 2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
+                        <li @click="filterItems('Jumlah 3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
+                        <li @click="filterItems('Jumlah >3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="product-grid">
-            <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item" :search="searchQuery" />
+            <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
+            <ItemCard v-if="!loading" v-for="item in itemStore.items" :key="item.id" :item="item" />
         </div>
-        <Pagination :search="searchQuery" :sort="sort" :filter="filter"/>
+        <Pagination />
     </div>
 </template>
+
 
 <style scoped>
 .product-grid {
@@ -136,33 +141,39 @@ function searchItems () {
 }
 
 .search-button {
-    background-color: #4299e1; /* Tailwind's blue-500 */
+    background-color: #4299e1;
+    /* Tailwind's blue-500 */
     color: white;
     border: 1px solid #4299e1;
 }
 
 .search-button:hover {
-    background-color: #2b6cb0; /* Tailwind's blue-700 */
+    background-color: #2b6cb0;
+    /* Tailwind's blue-700 */
 }
 
 input {
     flex: 1;
-    border: 1px solid #cbd5e0; /* Tailwind's gray-400 */
+    border: 1px solid #cbd5e0;
+    /* Tailwind's gray-400 */
 }
 
 input:focus {
     outline: none;
-    border-color: #63b3ed; /* Tailwind's blue-300 */
+    border-color: #63b3ed;
+    /* Tailwind's blue-300 */
 }
 
 .filter-button {
-    background-color: #4299e1; /* Tailwind's blue-500 */
+    background-color: #4299e1;
+    /* Tailwind's blue-500 */
     color: white;
     border: 1px solid #4299e1;
 }
 
 .filter-button:hover {
-    background-color: #2b6cb0; /* Tailwind's blue-700 */
+    background-color: #2b6cb0;
+    /* Tailwind's blue-700 */
 }
 
 .dropdown-menu {
