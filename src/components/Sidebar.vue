@@ -34,7 +34,7 @@ function toggleItems (){
     }
 
 function clickLink(path){
-    console.log("PATH",path)
+
     router.push(path)
 }
 </script>

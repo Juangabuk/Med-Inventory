@@ -14,7 +14,7 @@ export const useLoginStore = defineStore('login', ()=>{
     const loginRole = ref(null)
 
     const handleLoginUser = async (input)=>{
-        console.log(backendUrl)
+
         try{
 
             const {data} = await axios({

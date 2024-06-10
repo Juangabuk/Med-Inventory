@@ -68,20 +68,18 @@ const submitCart = () =>{
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Order it!"
-            }).then(async(result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                  await rentStore.postRentItems(cartData.value) 
-                } 
-              })
-              .then(()=>{
+                  rentStore.postRentItems(cartData.value) 
                   Swal.fire({
                     title: "Success!",
                     text: "Rent Items Successful!",
                     icon: "success"
                   });
                   localStorage.removeItem('items')
-                closeModal()
-                router.go()
+                  closeModal()
+                  router.go()
+                } 
               })
               .catch(err=>{
                 Swal.fire({

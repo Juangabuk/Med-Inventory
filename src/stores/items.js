@@ -63,12 +63,11 @@ export const useItemStore = defineStore('item', ()=>{
             items.value = result.data.data
             totalItem.value = result.data.length
             totalPages.value= Math.ceil(result.data.length/ numberItemPerPage)
-            console.log(result.data.length)
-            console.log("total",totalPages)
+            
   
         }
         catch(err){
-            console.log(err);
+ 
             Swal.fire({
                 toast: true,
                 showConfirmButton: true,
