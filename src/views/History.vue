@@ -2,11 +2,13 @@
 import { computed, onMounted, ref } from 'vue';
 import { useRentStore } from '../stores/Rent';
 import Swal from 'sweetalert2';
+import { routerKey, useRouter } from 'vue-router';
 
 const rent = useRentStore();
 
 const users = ref(null)
 const selectedUser = ref(null)
+const router = useRouter()
 
 onMounted(async() => {
   await rent.getAllHistory();
@@ -42,15 +44,24 @@ function returnItem(itemId) {
   confirmButtonText: "Ya Kembalikan!"
 }).then((result) => {
   if (result.isConfirmed) {
-    Swal.fire({
-      title: "Sukses Mengembalikan",
-      text: "Terimakasih Atas Perhatiannya!",
-      icon: "success"
-    });
-  }
-});
-  // Implement the logic to handle item return
-  console.log('Returning item with ID:', itemId);
+      rent.patchReturnItem(itemId)
+      Swal.fire({
+        title: "Sukses Mengembalikan",
+        text: "Terimakasih Atas Perhatiannya!",
+        icon: "success"
+      });
+      router.go()
+    }
+    })  
+    .catch(err=>{
+      Swal.fire({
+          toast: true,
+          showConfirmButton: true,
+          icon: 'error',
+          title: 'Permission denied',
+          text: `${err.response.data.message}`
+        });
+    })
 }
 
 const getHistoryByUser = async (event)=>{
@@ -63,7 +74,7 @@ const getHistoryByUser = async (event)=>{
 }
 
 const role = localStorage.getItem('role')
-console.log(users)
+
 
 </script>
 

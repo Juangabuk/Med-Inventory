@@ -103,5 +103,27 @@ export const useRentStore = defineStore('rent', ()=>{
         }
     }
 
-    return {getAllHistory, postRentItems,getAllUsers,items, users}
+    const patchReturnItem = async(rentId)=>{
+        const role = localStorage.getItem('role')
+
+        try {
+            if (role == 'Admin'){
+                await axios({
+                    method:'patch',
+                    url:backendUrl + '/admin/return-item/'+rentId,
+                    withCredentials:true
+                })
+            } else{
+                await axios({
+                    method:'patch',
+                    url:backendUrl + '/user/return-item/'+rentId,
+                    withCredentials:true
+                })
+            }
+        } catch (err) {
+            throw err
+        }
+    }
+
+    return {getAllHistory, postRentItems,getAllUsers, patchReturnItem, items, users}
 })

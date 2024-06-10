@@ -21,7 +21,7 @@ const {totalPages} = storeToRefs(itemStore)
 
 
 const pages = computed(() => {
-    console.log(totalPages, "ini total pages");
+   
     const maxPagesToShow = Math.min (5, totalPages.value);
     const half = Math.floor(maxPagesToShow / 2);
     let start = Math.max(1, currPage.value - half);
