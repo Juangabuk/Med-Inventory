@@ -43,12 +43,14 @@ export const useItemStore = defineStore('item', ()=>{
         }
 
         if(filter != null){
+            
             option += `&filter[jumlah]=${filter}`
         }
 
         try{
             let result
-            if (localStorage.getItem('role') == 'User'){
+            const role = localStorage.getItem('role')
+            if (role == 'User'){
                 result  = await axios({
                     method:'get',
                     url: `${baseUrl}/user/items?page[size]=5&page[number]=${page}`+ option

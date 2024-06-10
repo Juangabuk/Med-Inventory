@@ -5,12 +5,14 @@ import {useRentStore} from "../stores/Rent"
 import { backendUrl } from "../varConstants";
 import Swal from "sweetalert2";
 import { useRouter } from "vue-router";
+import SkeletonLoader from "./SkeletonLoader.vue";
 
 const emit = defineEmits(["close"]);
 
 const itemStore = useItemStore();
 const rentStore = useRentStore();
 const router = useRouter()
+const isLoading = ref(true)
 
 const closeModal = () =>{
   localStorage.setItem('items', JSON.stringify(cartData.value))
@@ -42,6 +44,7 @@ onMounted(async()=>{
       carts.push(currItem)
   }
   cartData.value = carts
+  isLoading.value = false
 })
 
 const removeItem = (id) => {
@@ -95,7 +98,7 @@ const submitCart = () =>{
 </script>
 
 <template>
-  <div class="modal-backdrop">
+  <div  class="modal-backdrop">
     <div class="modal">
       <header class="modal-header">
         <slot name="header">
@@ -107,7 +110,10 @@ const submitCart = () =>{
       </header>
 
       <section class="modal-body">
-        <div class="my-2">
+        <div v-if="isLoading">
+          <SkeletonLoader />
+        </div>
+        <div v-else class="my-2">
           <div class="table-header">
             <div class="header-item">Nama Alat</div>
             <div class="header-item">Jumlah</div>

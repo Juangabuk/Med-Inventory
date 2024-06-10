@@ -1,14 +1,27 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Header from '../components/Header.vue'
+import SkeletonLoader from '../components/SkeletonLoader.vue';
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
+const isLoading = ref(true)
+
+onMounted(()=>{
+    setTimeout(()=>{
+        isLoading.value = false
+    },500)
+    
+})
 
 </script>
 
 <template>
     <main>
-        <div class="container-fluid mt-5">
+    <div v-if="isLoading">
+        <SkeletonLoader />
+    </div>
+        
+        <div v-else class="container-fluid mt-5">
             <div class="row justify-content-center">
                 <div class="col-md-10">
                     <div class="card p-4 shadow-lg">
