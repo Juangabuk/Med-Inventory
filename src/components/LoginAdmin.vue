@@ -1,17 +1,28 @@
 <script setup>
 import { useLoginStore } from '../stores/login';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import SkeletonLoader from './SkeletonLoader.vue';
 
 const handleLogin = useLoginStore();
+const isLoading = ref(true)
 
 const formLogin = ref({
   email: null,
   password: null,
 });
+
+onMounted(()=>{
+    setTimeout(()=>{
+        isLoading.value = false
+    },750)  
+})
 </script>
 
 <template>
-  <div class="min-h-screen grid grid-cols-2 bg-gray-100">
+     <div v-if="isLoading">
+        <SkeletonLoader />
+    </div>
+  <div v-else class="min-h-screen grid grid-cols-2 bg-gray-100">
     <div class="w-full bg-white flex justify-center flex-col text-left px-24">
       <h1 class="text-5xl text-left text-gray-900">
         Medi-Inventory

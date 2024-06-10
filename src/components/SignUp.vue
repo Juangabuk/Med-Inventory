@@ -13,10 +13,12 @@
 </template> -->
 
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
 import { useRegisterStore } from '../stores/register';
+import SkeletonLoader from './SkeletonLoader.vue';
 
 const handleRegister = useRegisterStore()
+const isLoading = ref(true)
 
 const formRegister = ref({
     username:null,
@@ -26,10 +28,19 @@ const formRegister = ref({
     phoneNumber:null
 })
 
+onMounted(()=>{
+    setTimeout(()=>{
+        isLoading.value = false
+    },750)  
+})
+
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+    <div v-if="isLoading">
+        <SkeletonLoader />
+    </div>
+    <div v-else class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-md w-96">
             <h1 class="text-xl font-bold mb-6">Register</h1>
             <form @submit.prevent="handleRegister.handleRegisterUser(formRegister)">

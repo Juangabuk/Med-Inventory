@@ -9,10 +9,15 @@ import SkeletonLoader from '../components/SkeletonLoader.vue';
 
 const userStore = useLoginStore()
 const itemStore = useItemStore()
+const isLoadingInitial = ref(true)
+const isLoadingComp = ref(true)
 
 const dropdownOpenSort = ref(false)
 const dropdownOpenFilter = ref(false)
-const loading = ref(true) // New loading state
+
+const changeLoadingState = (input)=>{
+    isLoadingComp.value = input
+}
 
 const toggleDropdownSort = () => {
     dropdownOpenSort.value = !dropdownOpenSort.value
@@ -23,39 +28,53 @@ const toggleDropdownFilter = () => {
 }
 
 const sortItems = (criteria) => {
-    itemStore.sortItems(criteria)
-    dropdownOpenSort.value = false
+    isLoadingComp.value = true
+    itemStore.getAllItem(1,searchQuery.value,criteria).finally(()=>{
+        isLoadingComp.value = false
+        dropdownOpenSort.value = false
+    })
+    
 }
 
 const filterItems = (criteria) => {
-    itemStore.filterItems(criteria)
-    dropdownOpenFilter.value = false
+    isLoadingComp.value = true
+    itemStore.getAllItem(1, searchQuery.value,null ,criteria).finally(()=>{
+        isLoadingComp.value = false
+        dropdownOpenFilter.value = false
+    })
+    
 }
 
 onMounted(async () => {
     await itemStore.getAllItem()
-    loading.value = false // Set loading to false after items are fetched
+    setTimeout(()=>{
+        isLoadingInitial.value = false
+        isLoadingComp.value = false
+    },750)
+    // Set loading to false after items are fetched
 })
 
 const userData = JSON.parse(localStorage.getItem('user_data'))
 let searchQuery = ref(null)
 function searchItems() {
-    loading.value = true
+    isLoadingComp.value = true
     itemStore.getAllItem(1, searchQuery.value).finally(() => {
-        loading.value = false
+        isLoadingComp.value = false
     })
 }
 </script>
 
 <template>
-    <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
+    <div v-if="isLoadingInitial">
+        <SkeletonLoader />
+    </div>
     <!-- <Header></Header> -->
-    <div style="margin-left: 2%">
+    <div v-else style="margin-left: 2%">
         <div class="welcome mt-5 text-left text-3xl">
             <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
         </div>
         <div class="search-bar mt-3 flex items-center w-1/2">
-            <input type="text" placeholder="Search for items..." v-model="searchQuery"
+            <input type="text" placeholder="Search for items..." v-model="searchQuery" @keyup.enter="searchItems"
                 class="p-2 border rounded-l flex-1">
             <button @click="searchItems"
                 class="search-button p-2 border rounded-r bg-blue-500 text-white ml-2">Search</button>
@@ -83,19 +102,19 @@ function searchItems() {
                 <div v-if="dropdownOpenFilter"
                     class="dropdown-menu absolute mt-2 w-48 bg-white border rounded shadow-lg">
                     <ul>
-                        <li @click="filterItems('Jumlah 1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
-                        <li @click="filterItems('Jumlah 2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
-                        <li @click="filterItems('Jumlah 3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
-                        <li @click="filterItems('Jumlah >3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
+                        <li @click="filterItems('1')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 1 </li>
+                        <li @click="filterItems('2')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 2</li>
+                        <li @click="filterItems('3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock 3</li>
+                        <li @click="filterItems('>3')" class="p-2 hover:bg-gray-200 cursor-pointer">Stock >3</li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="product-grid">
-            <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
-            <ItemCard v-if="!loading" v-for="item in itemStore.items" :key="item.id" :item="item" />
+            <SkeletonLoader v-if="isLoadingComp" />
+            <ItemCard v-else v-for="item in itemStore.items" :key="item.id" :item="item" />
         </div>
-        <Pagination />
+        <Pagination @loading="changeLoadingState"/>
     </div>
 </template>
 

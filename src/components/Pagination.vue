@@ -6,12 +6,17 @@ import { storeToRefs } from 'pinia';
 const itemStore = useItemStore();
 const currPage = ref(1)
 const prop = defineProps(['search','sort','filter'])
+const emit = defineEmits(['loading'])
 
 
 const updatePageNumber = (newVal) => {
     if (newVal <= itemStore.totalPages && newVal > 0) {
-        itemStore.getAllItem(newVal, prop.search, prop.sort, prop.filter);
-        currPage.value = newVal;
+        emit('loading',true)
+        itemStore.getAllItem(newVal, prop.search, prop.sort, prop.filter).finally(()=>{
+            currPage.value = newVal;
+            emit('loading',false)
+        });
+        
     }
 };
 

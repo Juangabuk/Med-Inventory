@@ -1,9 +1,10 @@
 <template>
-  <SkeletonLoader v-if="isLoading" />
+  
   <div class="flex gap-2 bg-slate-50 text-slate-950 w-screen">
     <Sidebar v-if="showSidebarAndHeader" />
     <div :class="mainContentClass">
       <Header v-if="showSidebarAndHeader" />
+      <SkeletonLoader  />
       <RouterView />
     </div>
   </div>
@@ -14,14 +15,13 @@ import Header from './components/Header.vue';
 import Sidebar from './components/Sidebar.vue';
 import { RouterView, useRoute } from 'vue-router';
 import { computed } from 'vue';
-import SkeletonLoader from './components/SkeletonLoader.vue';
+
 
 export default {
   name: 'App',
   components: {
     Sidebar,
-    Header,
-    SkeletonLoader
+    Header
   },
   data() {
     return {
@@ -30,16 +30,7 @@ export default {
     };
   },
 
-  mounted() {
-    // Simulate data fetching
-    setTimeout(() => {
-      this.items = [
-        { id: 1, name: 'Item 1' },
-        { id: 2, name: 'Item 2' },
-      ];
-      this.isLoading = false;
-    }, 3000); // Replace with your actual data fetching logic
-  },
+  
   
   setup() {
     const route = useRoute();

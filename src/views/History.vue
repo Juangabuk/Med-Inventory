@@ -12,6 +12,7 @@ const users = ref(null)
 const selectedUser = ref(null)
 const router = useRouter()
 const loading = ref(true) // New loading state
+const isLoadingComp = ref(true)
 
 
 onMounted(async () => {
@@ -21,8 +22,8 @@ onMounted(async () => {
     await rent.getAllUsers()
     users.value = rent.users
   }
-  await itemStore.getAllItem()
   loading.value = false // Set loading to false after items are fetched
+  isLoadingComp.value = false
 });
 
 
@@ -72,11 +73,13 @@ function returnItem(itemId) {
 }
 
 const getHistoryByUser = async (event) => {
+  isLoadingComp.value = true
   if (event.target.value == 'All') {
-    await rent.getAllHistory(null)
+    await rent.getAllHistory(null).then(()=>isLoadingComp.value = false)
   } else {
-    await rent.getAllHistory(event.target.value)
+    await rent.getAllHistory(event.target.value).then(()=>isLoadingComp.value = false)
   }
+  
 
 }
 
@@ -86,7 +89,11 @@ const role = localStorage.getItem('role')
 </script>
 
 <template>
-  <div v-if="role === 'Admin'" class="history-table">
+  <div v-if="loading">
+    <SkeletonLoader />
+  </div>
+  <div v-else>
+    <div v-if="role === 'Admin'" class="history-table">
     <h1>History</h1>
     <div class="search-container">
       <!-- <input type="text" placeholder="Search" v-model="searchQuery" />
@@ -102,7 +109,8 @@ const role = localStorage.getItem('role')
         <option v-for="(user, index) in users" :key="index" :value="user.id">{{ user.username }}</option>
       </select>
     </div>
-    <table>
+    <SkeletonLoader v-if="isLoadingComp" />
+      <table v-else >
       <thead>
         <tr>
           <th>No</th>
@@ -142,36 +150,37 @@ const role = localStorage.getItem('role')
         </svg>
       </button> -->
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Barang</th>
-          <th>Jumlah</th>
-          <th>Tanggal Peminjaman</th>
-          <th>Tanggal Pengembalian</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(item, index) in itemData" :key="item.id">
-          <td>{{ index + 1 }}</td>
-          <td>{{ item.Item.namaBarang }}</td>
-          <td>{{ item.jumlah }}</td>
-          <td>{{ formatDate(item.tanggalPinjam) }}</td>
-          <td>{{ formatDate(item.tanggalKembali) }}</td>
-          <td><a :href="item.statusLink" class="status-link">{{ item.status }}</a></td>
-          <td>
-            <button class="return-button" @click="returnItem(item.id)" :disabled="!canReturn(item.status)">
-              Kembalikan Barang
-            </button>
-          </td>
-        </tr>
-      </tbody>
-      <SkeletonLoader v-if="loading" v-for="n in 10" :key="n" />
-    </table>
+      <table >
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Nama Barang</th>
+            <th>Jumlah</th>
+            <th>Tanggal Peminjaman</th>
+            <th>Tanggal Pengembalian</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in itemData" :key="item.id">
+            <td>{{ index + 1 }}</td>
+            <td>{{ item.Item.namaBarang }}</td>
+            <td>{{ item.jumlah }}</td>
+            <td>{{ formatDate(item.tanggalPinjam) }}</td>
+            <td>{{ formatDate(item.tanggalKembali) }}</td>
+            <td><a :href="item.statusLink" class="status-link">{{ item.status }}</a></td>
+            <td>
+              <button class="return-button" @click="returnItem(item.id)" :disabled="!canReturn(item.status)">
+                Kembalikan Barang
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
+  
 </template>
 
 <style scoped>

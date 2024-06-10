@@ -6,16 +6,20 @@ import { useItemStore } from '../stores/items';
 import { useLoginStore } from '../stores/login';
 import Pagination from '../components/Pagination.vue';
 import ModalAddItem from '../components/ModalAddItem.vue';
+import SkeletonLoader from '../components/SkeletonLoader.vue';
 
-onMounted(() => {
-    itemStore.getAllItem()
-})
+
 
 
 const isModalVisibleAdd = ref(null)
 const userStore = useLoginStore()
 const itemStore = useItemStore()
+const isLoadingInitial = ref(true)
+const isLoadingComp = ref(true)
 
+const changeLoadingState = (input)=>{
+    isLoadingComp.value = input
+}
 const userData = JSON.parse(localStorage.getItem('user_data'))
 const editStatus = ref(false)
 function closeAddModal() {
@@ -34,7 +38,10 @@ async function openAddModal( value =  null) {
 
 const searchQuery = ref(null)
 function searchItems () {
-    itemStore.getAllItem(1, searchQuery.value)
+    isLoadingComp.value = true
+    itemStore.getAllItem(1, searchQuery.value).finally(() => {
+        isLoadingComp.value = false
+    })
 }
 
 const sort = ref(null)
@@ -51,19 +58,32 @@ const toggleDropdownFilter = () => {
 }
 const sortItems = (criteria) => {
   // Assuming your itemStore has a method for sorting
+  isLoadingComp.value = true
   sort.value = criteria
-  itemStore.getAllItem(1,searchQuery.value,criteria)
-  dropdownOpenSort.value = false
+  itemStore.getAllItem(1,searchQuery.value,criteria).finally(()=>{
+        isLoadingComp.value = false
+        dropdownOpenSort.value = false
+    })
+
 }
 
 const filterItems = (criteria) => {
   // Assuming your itemStore has a method for filtering
+  isLoadingComp.value = true
   filter.value = criteria
-  itemStore.getAllItem(1, searchQuery.value,null ,criteria)
-  dropdownOpenFilter.value = false
+  itemStore.getAllItem(1, searchQuery.value,null ,criteria).finally(()=>{
+        isLoadingComp.value = false
+        dropdownOpenFilter.value = false
+    })
 }
 
-
+onMounted(() => {
+    itemStore.getAllItem()
+    setTimeout(()=>{
+        isLoadingInitial.value = false
+        isLoadingComp.value = false
+    },750)
+})
 
 
 // console.log(itemStore.items)
@@ -71,7 +91,10 @@ const filterItems = (criteria) => {
 </script>
 
 <template>
-    <div class="welcome mt-5 text-left text-3xl">
+    <div v-if="isLoadingInitial">
+        <SkeletonLoader />
+    </div>
+    <div v-else class="welcome mt-5 text-left text-3xl">
         <h1> Hello {{ userData.username }}, Welcome on MedInventory</h1>
     </div>
     <div>
@@ -81,7 +104,7 @@ const filterItems = (criteria) => {
                 <button class="add-item-button" @click="openAddModal()" >Add Item</button>
             </div>
             <div class="search-bar mt-3 flex items-center w-1/2">
-            <input type="text" placeholder="Search for items..." v-model="searchQuery" class="p-2 border rounded-l flex-1">
+            <input type="text" placeholder="Search for items..." v-model="searchQuery" @keyup.enter="searchItems" class="p-2 border rounded-l flex-1">
             <button @click="searchItems" class="search-button p-2 border rounded-r bg-blue-500 text-white ml-2">Search</button>
             <div class="relative ml-2">
                 <button @click="toggleDropdownSort" class="filter-button p-2 border rounded bg-blue-500 text-white">
@@ -113,10 +136,11 @@ const filterItems = (criteria) => {
             </div>
         </div>
             <div class="product-grid">
-                <ItemCard v-for="item in itemStore.items" :key="item.id" :item="item" @open="openAddModal"/>
+                <SkeletonLoader v-if="isLoadingComp" />
+                <ItemCard v-else v-for="item in itemStore.items" :key="item.id" :item="item" @open="openAddModal"/>
             </div>
         </div>
-        <Pagination :search="searchQuery" :sort="sort" :filter="filter"/>
+        <Pagination :search="searchQuery" :sort="sort" :filter="filter" @loading="changeLoadingState"/>
         <ModalAddItem v-if="isModalVisibleAdd" @close="closeAddModal" :editStatus="editStatus"/>
     </div>
 </template>
