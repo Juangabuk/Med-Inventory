@@ -255,4 +255,11 @@ td {
 .status-link:hover {
   text-decoration: underline;
 }
+
+#user-select{
+
+  background-color: white;
+  color: black;
+
+}
 </style>

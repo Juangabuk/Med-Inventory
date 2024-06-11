@@ -232,10 +232,19 @@ img {
 .form-control:focus {
   border-color: #80bdff;
   outline: 0;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  /* box-shadow: 0 0 5px rgba(0, 123, 255, 0.25); */
 }
 
 textarea.form-control {
   resize: vertical;
+  background-color: white;
+  color: black;
 }
+
+select.form-control{
+  background-color: white;
+  color: black;
+}
+
+
 </style>

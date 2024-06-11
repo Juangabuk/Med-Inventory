@@ -50,7 +50,7 @@ onMounted(async () => {
     setTimeout(()=>{
         isLoadingInitial.value = false
         isLoadingComp.value = false
-    },750)
+    },200)
     // Set loading to false after items are fetched
 })
 
