@@ -7,142 +7,156 @@ const emit = defineEmits(["close"]);
 
 const itemStore = useItemStore()
 
-// onMounted(()=>{
-//     itemStore.getDetailItem(id)
-// })
-
 const imageUrl = backendUrl + '/static/' + itemStore.detailItem.gambar;
-
 </script>
 
 <template>
     <div class="modal-backdrop">
-      <div class="modal">
-        <header class="modal-header">
-          <slot name="header">
-            <h2 class="text-lg font-semibold">Detail Item</h2>
-          </slot>
-          <button
-            type="button"
-            class="btn-close"
-            @click.stop="emit('close')"
-          >
-            x
-          </button>
-        </header>
-  
-        <section class="modal-body">
-          <div class="my-2">
-            <h1 class="">{{ itemStore.detailItem.namaBarang }}</h1>
-            <div class="flex flex-row align-content-center">
-              <div class="basis-1/2">
-                <img :src="imageUrl" :alt="itemStore.detailItem.namaBarang">
-              </div>
-              <div class="basis-1/2 flex flex-col">
-                <div class="div-desc basis-4/5 pt-2">
-                  <p class="description">{{itemStore.detailItem.deskripsi}}</p>
-                </div>
-                <div class="basis-1/5 justify-self-start">
-                  <p>Quota: {{ itemStore.detailItem.jumlah }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-         </section>
-  
-        <footer class="modal-footer">
-          <slot name="footer">
+        <div class="modal">
+            <header class="modal-header">
+                <slot name="header">
+                    <h2 class="text-lg font-semibold">Detail Item</h2>
+                </slot>
+                <button
+                    type="button"
+                    class="btn-close"
+                    @click.stop="emit('close')"
+                >
+                    &times;
+                </button>
+            </header>
 
-          </slot>
-          <button
-            type="button"
-            class="btn-green"
-            @click.stop="emit('close')"
-          >
-            Close Modal
-          </button>
-        </footer>
-      </div>
+            <section class="modal-body">
+                <div class="item-details">
+                    <h1 class="item-name">{{ itemStore.detailItem.namaBarang }}</h1>
+                    <div class="item-content">
+                        <div class="item-image">
+                            <img :src="imageUrl" :alt="itemStore.detailItem.namaBarang">
+                        </div>
+                        <div class="item-info">
+                            <p class="description">{{itemStore.detailItem.deskripsi}}</p>
+                            <p class="quota">Quota: {{ itemStore.detailItem.jumlah }}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="modal-footer">
+                <slot name="footer"></slot>
+                <button
+                    type="button"
+                    class="btn-green"
+                    @click.stop="emit('close')"
+                >
+                    Close Modal
+                </button>
+            </footer>
+        </div>
     </div>
-  </template>
+</template>
 
 <style scoped>
 .modal-backdrop {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .modal {
-  background: #FFFFFF;
-  box-shadow: 2px 2px 20px 1px;
-  overflow-x: auto;
-  display: flex;
-  flex-direction: column;
-  max-height:55%;
-  max-width:25%;
-  border-radius: 3%;
-  overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 80%;
+    max-width: 500px;
 }
 
 .modal-header,
 .modal-footer {
-  padding: 15px;
-  display: flex;
-}
-
-.modal-header {
-  position: relative;
-  border-bottom: 1px solid #eeeeee;
-  color: black;
-  justify-content: space-between;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eeeeee;
 }
 
 .modal-footer {
-  border-top: 1px solid #eeeeee;
-  flex-direction: column;
-  justify-content: flex-end;
+    border-top: 1px solid #eeeeee;
+    justify-content: flex-end;
 }
 
 .modal-body {
-  position: relative;
-  padding: 20px 10px;
+    padding: 16px;
 }
 
 .btn-close {
-  position: absolute;
-  top: 0;
-  right: 0;
-  border: none;
-  font-size: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-weight: bold;
-  color: black;
-  background: transparent;
+    background: transparent;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
 }
 
 .btn-green {
-  color: white;
-  background: #0d4dbc;
-  border: 1px solid #0d4dbc;
-  border-radius: 2%;
+    color: white;
+    background-color: #0d4dbc;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
-img{
-  width:20rem;
-  object-fit: cover;
+.btn-green:hover {
+    background-color: #0b3a99;
 }
 
-.div-desc{
-  word-wrap: break-word;
+.item-details {
+    text-align: center;
 }
 
+.item-name {
+    font-size: 24px;
+    margin-bottom: 16px;
+    color: #333;
+}
 
+.item-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.item-image img {
+    width: 100%;
+    max-width: 200px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.item-info {
+    flex: 1;
+    padding-left: 16px;
+}
+
+.description {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.quota {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+}
 </style>

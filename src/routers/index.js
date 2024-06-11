@@ -43,6 +43,11 @@ const routes = [
         path: '/profile',
         name: 'Profile',
         component: Profile
+    },
+    {
+        path: '/:catchAll(.*)',
+        name: 'PageNotFound',
+        component: () => import('../components/PageNotFound.vue')
     }
 ]
 
