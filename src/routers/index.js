@@ -1,6 +1,7 @@
 import Home from '../views/Home.vue'
 // import Homes from '../views/Homes.vue'
 import SignUp from '../components/SignUp.vue'
+import SignUpAdmin from '../components/SignUpAdmin.vue'
 import Login from '../components/Login.vue'
 import ProductManagement from '../views/ProductManagement.vue'
 import Profile from '../views/Profile.vue'
@@ -18,6 +19,11 @@ const routes = [
         path: '/sign-up',
         name: 'SignUp',
         component: SignUp
+    },
+    {
+        path: '/sign-up-admin',
+        name: 'SignUpAdmin',
+        component: SignUpAdmin
     },
     {
         path: '/login',
@@ -60,7 +66,7 @@ router.beforeEach((to,from,next)=>{
     const isAuth = localStorage.access_token
     if(isAuth &&  ( to.name === 'Login'|| to.name === 'SignUp' || to.name === 'LoginAdmin')){
       next({name:'Home'})
-    } else if(!isAuth  &&  (to.name !== 'Login' && to.name !== 'SignUp' && to.name !== 'LoginAdmin')){
+    } else if(!isAuth  &&  (to.name !== 'Login' && to.name !== 'SignUp' && to.name !== 'LoginAdmin' && to.name == 'SignUpAdmin')){
       next({name:'Login'})
     } else{
       next()

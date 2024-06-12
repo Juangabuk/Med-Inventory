@@ -53,5 +53,48 @@ export const useRegisterStore = defineStore('register', ()=>{
         }
     }
 
+    const handleRegisterAdmin = async (input)=>{
+        
+        try{
+            if (input.password != input.passwordConfirmation){
+                throw{response:{data:{message:"Password tidak sama"}}}
+            }
+
+            delete input.passwordConfirmation
+            const {data} = await axios({
+                method:'post',
+                url: `${baseUrl}/admin/register`,
+                data:input
+            })
+           
+      
+            
+            router.push('/')
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                // timer: 3000,
+                // timerProgressBar: true,
+            
+                icon: 'success',
+                title: `Pendaftaran Berhasil`
+            })
+
+            
+        }
+        catch(err){
+            Swal.fire({
+                toast: true,
+                showConfirmButton: true,
+                // timer: 3000,
+                // timerProgressBar: true,
+          
+                icon: 'error',
+                title: 'Permission denied',
+                text: `${err.response.data.message}`
+              });
+        }
+    }
+
     return {handleRegisterUser}
 })

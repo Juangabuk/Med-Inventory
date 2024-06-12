@@ -29,7 +29,11 @@ function closeModalCart() {
     isModalCartVisible.value = false;
 }
 
-const localRole = ref(localStorage.getItem('role'))
+function goToRegAdmin(){
+    router.push('/sign-up-admin')
+}
+
+const localRole = localStorage.getItem('role')
 </script>
 
 <template>
@@ -43,6 +47,7 @@ const localRole = ref(localStorage.getItem('role'))
         </div>
         <div class="nav-right">
             <button @click="showModalCart" class="dropbtn bi-cart-check">🛒 Cart</button>
+            <button v-if="localRole == 'Admin'" @click="goToRegAdmin" class="dropbtn bi-cart-check">Add Admin</button>
             <div class="dropdown">
                 <button class="dropbtn">Account</button>
                 <div class="dropdown-content">

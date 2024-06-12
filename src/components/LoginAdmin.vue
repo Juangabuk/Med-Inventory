@@ -37,7 +37,7 @@ onMounted(()=>{
     </div>
     <div class="w-full h-full flex justify-center items-center">
       <div class="bg-white p-8 rounded-lg shadow-md w-96 text-left">
-        <h1 class="text-xl font-bold mb-6 text-center">Login</h1>
+        <h1 class="text-xl font-bold mb-6 text-center">Login Admin</h1>
         <form @submit.prevent="handleLogin.handleLoginAdmin(formLogin)">
           <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
