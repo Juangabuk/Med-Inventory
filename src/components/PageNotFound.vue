@@ -1,6 +1,6 @@
 <template>
   <div class="not-found-container">
-    <img src="../assets/loading_pulse.gif" alt="404 Image" class="not-found-image" />
+    <img src="../assets/Af6V.gif" alt="404 Image" class="not-found-image" />
     <h1>404</h1>
     <p>Page Not Found</p>
   </div>
