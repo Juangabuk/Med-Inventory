@@ -27,8 +27,13 @@ const cartData = ref(null)
 onMounted(async()=>{
   const items = JSON.parse(localStorage.getItem('items'));
 
+
   let carts = []
-  for (let item of items){
+  if (!items || items.length == 0){
+    cartData.value = carts
+    isLoading.value = false
+  } else{
+    for (let item of items){
     await itemStore.getDetailItem(item.itemId)
       const userData = JSON.parse(localStorage.getItem('user_data'))
       const currItem = {
@@ -45,6 +50,8 @@ onMounted(async()=>{
   }
   cartData.value = carts
   isLoading.value = false
+  }
+ 
 })
 
 const removeItem = (id) => {
@@ -111,7 +118,7 @@ const submitCart = () =>{
 
       <section class="modal-body">
         <div v-if="isLoading">
-          <SkeletonLoader />
+          <SkeletonLoader style="height: 100%;"/>
         </div>
         <div v-else class="my-2">
           <div class="table-header">

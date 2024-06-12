@@ -35,7 +35,7 @@ export default {
   setup() {
     const route = useRoute();
     const showSidebarAndHeader = computed(() => {
-      return route.path !== '/sign-up' && route.path !== '/login' && route.path !== '/login-admin' && route.path !== '/register-admin';
+      return route.path !== '/sign-up' && route.path !== '/login' && route.path !== '/login-admin' && route.name !== 'PageNotFound';
     });
 
     const mainContentClass = computed(() => {
