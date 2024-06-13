@@ -75,6 +75,7 @@ export const useRentStore = defineStore('rent', ()=>{
                     withCredentials:true
                 })
             }
+            return true
             
         } catch (err) {
             throw err
@@ -120,6 +121,7 @@ export const useRentStore = defineStore('rent', ()=>{
                     withCredentials:true
                 })
             }
+            return true
         } catch (err) {
             throw err
         }

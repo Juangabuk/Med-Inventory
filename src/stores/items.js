@@ -177,6 +177,7 @@ export const useItemStore = defineStore('item', ()=>{
                 url: baseUrl +'/admin/delete-item/'+id,
                 withCredentials: true
             })
+            return true
 
         } catch (err) {
             Swal.fire({

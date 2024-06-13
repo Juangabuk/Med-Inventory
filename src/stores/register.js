@@ -96,5 +96,5 @@ export const useRegisterStore = defineStore('register', ()=>{
         }
     }
 
-    return {handleRegisterUser}
+    return {handleRegisterUser, handleRegisterAdmin}
 })
