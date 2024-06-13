@@ -71,15 +71,17 @@ async function deleteItem(id){
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Delete it!"
-            }).then((result) => {
+            }).then(async (result) => {
                 if (result.isConfirmed) {
-                    itemStore.deleteItem(id)   
-                  Swal.fire({
-                    title: "Success!",
-                    text: "Your item has been deleted",
-                    icon: "success"
-                  });
-                  router.go()
+                    const res = await itemStore.deleteItem(id)
+                    if (res){
+                        Swal.fire({
+                          title: "Success!",
+                          text: "Your item has been deleted",
+                          icon: "success"
+                        });
+                        router.go()
+                    }   
                 }
               });
 }

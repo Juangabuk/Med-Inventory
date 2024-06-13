@@ -69,6 +69,10 @@ const changeItemValue = (id, newVal) => {
   }
 }
 
+const removeLocalStorage = ()=>{
+  localStorage.removeItem('items')
+}
+
 const submitCart = () =>{
   Swal.fire({
                 title: "Are you sure?",
@@ -78,18 +82,26 @@ const submitCart = () =>{
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
                 confirmButtonText: "Order it!"
-            }).then((result) => {
+            }).then(async(result) => {
                 if (result.isConfirmed) {
-                  rentStore.postRentItems(cartData.value) 
-                  Swal.fire({
-                    title: "Success!",
-                    text: "Rent Items Successful!",
-                    icon: "success"
-                  });
-                  localStorage.removeItem('items')
-                  closeModal()
-                  router.go()
-                } 
+                  const res = await rentStore.postRentItems(cartData.value) 
+                  
+                  if (res){
+                    
+                    Swal.fire({
+                      title: "Success!",
+                      text: "Rent Items Successful!",
+                      icon: "success"
+                    });
+                    closeModal()
+                    localStorage.removeItem('items')
+                    router.go()
+                  } else{
+                    const err = {response:{data:{message:"Error adding item to cart"}}}
+                    throw err
+                  }
+
+                  }
               })
               .catch(err=>{
                 Swal.fire({

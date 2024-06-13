@@ -43,7 +43,7 @@ onMounted(()=>{
     <div v-else class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
         <div class="bg-white p-8 rounded-lg shadow-md w-96">
             <h1 class="text-xl font-bold mb-6">Register</h1>
-            <form @submit.prevent="handleRegister.handleRegisterUser(formRegister)">
+            <form @submit.prevent="handleRegister.handleRegisterAdmin(formRegister)">
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Name</label>
                     <input type="name" v-model="formRegister.username" required

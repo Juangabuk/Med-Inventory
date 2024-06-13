@@ -50,15 +50,20 @@ function returnItem(itemId) {
     cancelButtonColor: "#d33",
     cancelButtonText: "Tunggu Dulu!",
     confirmButtonText: "Ya Kembalikan!"
-  }).then((result) => {
+  }).then(async(result) => {
     if (result.isConfirmed) {
-      rent.patchReturnItem(itemId)
-      Swal.fire({
-        title: "Sukses Mengembalikan",
-        text: "Terimakasih Atas Perhatiannya!",
-        icon: "success"
-      });
-      router.go()
+      const result = await rent.patchReturnItem(itemId)
+      if (result){
+        Swal.fire({
+          title: "Sukses Mengembalikan",
+          text: "Terimakasih Atas Perhatiannya!",
+          icon: "success"
+        });
+        router.go()
+      } else{
+        const err = {response:{data:{message:"Error adding item to cart"}}}
+        throw err
+      }
     }
   })
     .catch(err => {
